@@ -24,7 +24,7 @@ void AYMobaGamePlayerController::PlayerTick(float DeltaTime)
 		{
 			MoveToMouseCursor();
 		}
-		//屏幕跟随鼠标移动
+		//屏幕跟随鼠标移动,可调整速度
 		FScreenMoveUnits().ListenScreenMove(this, 30.0f);
 	}
 }
