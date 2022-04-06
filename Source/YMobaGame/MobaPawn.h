@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+#include "MobaGameState.h"
 #include "MobaPawn.generated.h"
 
 class AYMobaGameCharacter;

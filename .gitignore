@@ -79,7 +79,8 @@ DerivedDataCache/*
 .vscode/
 Content/StartContent/*
 Packages/*
-
+Content/ParagonCountess/*
+Content/ParagonTwinblast/*
 #files
 
 *.vscode

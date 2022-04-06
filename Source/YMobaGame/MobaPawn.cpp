@@ -12,6 +12,7 @@
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "Materials/Material.h"
 #include "Blueprint/AIBlueprintHelperLibrary.h"
+#include "Common/MethodUnit.h"
 #include "Engine/World.h"
 
 // Sets default values
@@ -68,10 +69,27 @@ void AMobaPawn::BeginPlay()
 	Super::BeginPlay();
 	//仅在服务器生成 Charactor 实例
 	if (GetLocalRole() == ROLE_Authority) {
-		//生成 Charactor 实例
-		if (DefaultPawnClass) {
-			MobaGameCharacter = GetWorld()->SpawnActor<AYMobaGameCharacter>(DefaultPawnClass, GetActorLocation(), GetActorRotation());
+
+		//获取 GameState 实例
+		AMobaGameState* MobaGameState =  MethodUnit::GetMobaGameState(GetWorld());
+
+		if (MobaGameState) {
+
+			//外部文件读取 CharacterID
+			FString StringID;
+			FFileHelper::LoadFileToString(StringID,*(FPaths::ProjectDir() / TEXT("CharacterID.txt")));
+			int64 CharaterID = FCString::Atoi64(*StringID);
+
+			if (const FCharacterTable* FCharacterTable_Ins = MobaGameState->GetFCharaterTableByID(CharaterID)) {
+				DefaultPawnClass = FCharacterTable_Ins->CharacterClass;
+			}
+
+			//生成 Charactor 实例
+			if (DefaultPawnClass) {
+				MobaGameCharacter = GetWorld()->SpawnActor<AYMobaGameCharacter>(DefaultPawnClass, GetActorLocation(), GetActorRotation());
+			}
 		}
+		
 	}
 	
 }
