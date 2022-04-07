@@ -6,6 +6,8 @@
 #include "MobaPawn.h"
 #include "Engine/World.h"
 #include "Tool/ScreenMoveUnits.h"
+#include "Kismet/GameplayStatics.h"
+#include "GameFramework/HUD.h"
 
 AYMobaGamePlayerController::AYMobaGamePlayerController()
 {
@@ -51,28 +53,67 @@ void AYMobaGamePlayerController::OnResetVR()
 
 void AYMobaGamePlayerController::MoveToMouseCursor()
 {
-	/*if (UHeadMountedDisplayFunctionLibrary::IsHeadMountedDisplayEnabled())
-	{
-		if (AMobaPawn* MyPawn = Cast<AMobaPawn>(GetPawn()))
-		{
-			if (MyPawn->GetCursorToWorld())
-			{
-				UAIBlueprintHelperLibrary::SimpleMoveToLocation(this, MyPawn->GetCursorToWorld()->GetComponentLocation());
-			}
-		}
-	}*/
+
 	if (AMobaPawn* MyPawn = Cast<AMobaPawn>(GetPawn()))
 	{
-		// Trace to see what is under the mouse cursor
-		FHitResult Hit;
-		GetHitResultUnderCursor(ECC_Visibility, false, Hit);
+		//获取 LocalPlayer.
+		ULocalPlayer* LocalPlayer = Cast<ULocalPlayer>(Player);
 
-		if (Hit.bBlockingHit)
+		//通过 LocalPlayer 获取当前 ViewportClient 下的 MousePosition.
+		if (LocalPlayer && LocalPlayer->ViewportClient)
 		{
-			// We hit something, move there
-			MyPawn->CharactorMoveToOnServer(Hit.ImpactPoint);
+			FVector2D MousePosition;
+
+			if (LocalPlayer->ViewportClient->GetMousePosition(MousePosition))
+			{				
+				// Early out if we clicked on a HUD hitbox
+				if (GetHUD() != NULL && GetHUD()->GetHitBoxAtCoordinates(MousePosition, true))
+				{
+					return;
+				}
+
+				//将屏幕二维坐标转换为世界坐标传递给服务器.
+				FVector WorldOrigin;
+				FVector WorldDirection;
+
+				if (UGameplayStatics::DeprojectScreenToWorld(this, MousePosition, WorldOrigin, WorldDirection) == true)
+				{
+					VerifyMouseClickOnServer_Implementation(WorldOrigin, WorldDirection);
+				}			
+			}
+			
 		}
 	}
+}
+
+void AYMobaGamePlayerController::VerifyMouseClickOnServer_Implementation(const FVector& WorldOrigin, const FVector& WorldDirection)
+{
+	if (AMobaPawn* MyPawn = Cast<AMobaPawn>(GetPawn()))
+	{
+		FHitResult HitResult;
+		FCollisionQueryParams CollisionQueryParams(SCENE_QUERY_STAT(ClickableTrace), false);
+
+		//作对 ECC_GameTraceChannel1 轨道的追踪
+		if (GetWorld()->LineTraceSingleByChannel(HitResult, WorldOrigin, WorldOrigin + WorldDirection * HitResultTraceDistance, ECC_GameTraceChannel1, CollisionQueryParams)) {
+			if (HitResult.bBlockingHit) {
+				//检测到就移动攻击
+			}
+		}
+
+		//作对 ECC_Visibility 轨道的追踪
+		if (GetWorld()->LineTraceSingleByChannel(HitResult, WorldOrigin, WorldOrigin + WorldDirection * HitResultTraceDistance, ECC_Visibility, CollisionQueryParams)) {
+			
+			if (HitResult.bBlockingHit) {
+				//角色移动
+				MyPawn->CharactorMoveToOnServer(HitResult.ImpactPoint);
+			}	
+		}
+	}
+}
+
+bool AYMobaGamePlayerController::VerifyMouseClickOnServer_Validate(const FVector& WorldOrigin, const FVector& WorldDirection)
+{
+	return true;
 }
 
 void AYMobaGamePlayerController::MoveToTouchLocation(const ETouchIndex::Type FingerIndex, const FVector Location)
