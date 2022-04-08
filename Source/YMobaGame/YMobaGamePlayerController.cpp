@@ -3,7 +3,6 @@
 #include "YMobaGamePlayerController.h"
 #include "Runtime/Engine/Classes/Components/DecalComponent.h"
 #include "HeadMountedDisplayFunctionLibrary.h"
-#include "MobaPawn.h"
 #include "Engine/World.h"
 #include "Tool/ScreenMoveUnits.h"
 #include "Kismet/GameplayStatics.h"
@@ -97,6 +96,8 @@ void AYMobaGamePlayerController::VerifyMouseClickOnServer_Implementation(const F
 		if (GetWorld()->LineTraceSingleByChannel(HitResult, WorldOrigin, WorldOrigin + WorldDirection * HitResultTraceDistance, ECC_GameTraceChannel1, CollisionQueryParams)) {
 			if (HitResult.bBlockingHit) {
 				//¼ì²âµ½¾ÍÒÆ¶¯¹¥»÷
+				MyPawn->MoveToEnemyAndAttackOnServer(HitResult.ImpactPoint, Cast<AMobaPawn>(HitResult.Actor));
+				return;
 			}
 		}
 

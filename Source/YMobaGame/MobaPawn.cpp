@@ -152,3 +152,13 @@ void AMobaPawn::CharactorMoveToOnServer_Implementation(const FVector& DirectionL
 	}
 }
 
+void AMobaPawn::MoveToEnemyAndAttackOnServer_Implementation(const FVector& DirectionLocation, const AMobaPawn* Enemy)
+{
+
+}
+
+bool AMobaPawn::MoveToEnemyAndAttackOnServer_Validate(const FVector& DirectionLocation, const AMobaPawn* Enemy)
+{
+	return Enemy != nullptr && Enemy != this;
+}
+

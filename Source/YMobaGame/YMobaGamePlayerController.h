@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "MobaPawn.h"
 #include "GameFramework/PlayerController.h"
 #include "YMobaGamePlayerController.generated.h"
 
@@ -38,6 +39,7 @@ protected:
 
 	UFUNCTION(server, reliable, WithValidation)
 	void VerifyMouseClickOnServer(const FVector& WorldOrigin, const FVector& WorldDirection);
+
 };
 
 

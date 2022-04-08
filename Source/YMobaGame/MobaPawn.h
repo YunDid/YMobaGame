@@ -65,6 +65,9 @@ public:
 	//TCP + 专属服务器
 	UFUNCTION(server, reliable)
 		void CharactorMoveToOnServer(const FVector& DirectionLocation);
+
+	UFUNCTION(server, reliable, WithValidation)
+		void MoveToEnemyAndAttackOnServer(const FVector& DirectionLocation, const AMobaPawn* Enemy);
 protected:
 	//用于角色逻辑控制的 Character
 	/*
