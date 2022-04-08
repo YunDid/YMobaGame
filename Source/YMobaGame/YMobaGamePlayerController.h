@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "MobaPawn.h"
+#include "YMobaGamePawn.h"
 #include "GameFramework/PlayerController.h"
 #include "YMobaGamePlayerController.generated.h"
 

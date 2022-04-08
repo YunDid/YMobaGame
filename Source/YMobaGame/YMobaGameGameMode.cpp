@@ -3,7 +3,7 @@
 #include "YMobaGameGameMode.h"
 #include "YMobaGamePlayerController.h"
 #include "YMobaGameCharacter.h"
-#include "MobaGameState.h"
+#include "YMobaGameState.h"
 #include "UObject/ConstructorHelpers.h"
 
 AYMobaGameGameMode::AYMobaGameGameMode()
@@ -11,10 +11,10 @@ AYMobaGameGameMode::AYMobaGameGameMode()
 	// use our custom PlayerController class
 	PlayerControllerClass = AYMobaGamePlayerController::StaticClass();
 
-	GameStateClass = AMobaGameState::StaticClass();
+	GameStateClass = AYMobaGameState::StaticClass();
 
 	// set default pawn class to our Blueprinted character
-	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/TopDownCPP/Blueprints/MobaPawn"));
+	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/TopDownCPP/Blueprints/YMobaGamePawn"));
 	if (PlayerPawnBPClass.Class != NULL)
 	{
 		DefaultPawnClass = PlayerPawnBPClass.Class;

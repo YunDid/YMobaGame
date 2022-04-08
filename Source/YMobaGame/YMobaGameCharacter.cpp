@@ -39,7 +39,7 @@ void AYMobaGameCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	//¿Í»§¶ËÄ£Äâ
-	if (GetLocalRole() == ROLE_AutonomousProxy) {
+	if (GetLocalRole() == ROLE_Authority) {
 		SpawnDefaultController();
 	}
 }

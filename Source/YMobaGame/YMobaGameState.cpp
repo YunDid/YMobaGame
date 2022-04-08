@@ -1,15 +1,15 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "MobaGameState.h"
+#include "YMobaGameState.h"
 
-AMobaGameState::AMobaGameState()
+AYMobaGameState::AYMobaGameState()
 {
 	static ConstructorHelpers::FObjectFinder<UDataTable> UDataTable_Character_Ins(TEXT("/Game/Tables/CharacterTable"));
 	UDataTable_Character = UDataTable_Character_Ins.Object;
 }
 
-const FCharacterTable* AMobaGameState::GetFCharaterTableByID(const int64& CharaterID)
+const FCharacterTable* AYMobaGameState::GetFCharaterTableByID(const int64& CharaterID)
 {
 	//通过单例获取角色配置表缓存
 	const TArray<FCharacterTable*>* FCharaterTable_Cache_Ins = GetFCharaterTable_Cache();
@@ -23,7 +23,7 @@ const FCharacterTable* AMobaGameState::GetFCharaterTableByID(const int64& Charat
 	return nullptr;
 }
 
-const TArray<FCharacterTable*>* AMobaGameState::GetFCharaterTable_Cache()
+const TArray<FCharacterTable*>* AYMobaGameState::GetFCharaterTable_Cache()
 {
 	if (!FCharaterTable_Cache.Num()) {
 

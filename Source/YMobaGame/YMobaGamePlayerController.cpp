@@ -53,7 +53,7 @@ void AYMobaGamePlayerController::OnResetVR()
 void AYMobaGamePlayerController::MoveToMouseCursor()
 {
 
-	if (AMobaPawn* MyPawn = Cast<AMobaPawn>(GetPawn()))
+	if (AYMobaGamePawn* MyPawn = Cast<AYMobaGamePawn>(GetPawn()))
 	{
 		//获取 LocalPlayer.
 		ULocalPlayer* LocalPlayer = Cast<ULocalPlayer>(Player);
@@ -77,7 +77,7 @@ void AYMobaGamePlayerController::MoveToMouseCursor()
 
 				if (UGameplayStatics::DeprojectScreenToWorld(this, MousePosition, WorldOrigin, WorldDirection) == true)
 				{
-					VerifyMouseClickOnServer_Implementation(WorldOrigin, WorldDirection);
+					VerifyMouseClickOnServer(WorldOrigin, WorldDirection);
 				}			
 			}
 			
@@ -87,7 +87,7 @@ void AYMobaGamePlayerController::MoveToMouseCursor()
 
 void AYMobaGamePlayerController::VerifyMouseClickOnServer_Implementation(const FVector& WorldOrigin, const FVector& WorldDirection)
 {
-	if (AMobaPawn* MyPawn = Cast<AMobaPawn>(GetPawn()))
+	if (AYMobaGamePawn* MyPawn = Cast<AYMobaGamePawn>(GetPawn()))
 	{
 		FHitResult HitResult;
 		FCollisionQueryParams CollisionQueryParams(SCENE_QUERY_STAT(ClickableTrace), false);
@@ -96,7 +96,7 @@ void AYMobaGamePlayerController::VerifyMouseClickOnServer_Implementation(const F
 		if (GetWorld()->LineTraceSingleByChannel(HitResult, WorldOrigin, WorldOrigin + WorldDirection * HitResultTraceDistance, ECC_GameTraceChannel1, CollisionQueryParams)) {
 			if (HitResult.bBlockingHit) {
 				//检测到就移动攻击
-				MyPawn->MoveToEnemyAndAttackOnServer(HitResult.ImpactPoint, Cast<AMobaPawn>(HitResult.Actor));
+				MyPawn->MoveToEnemyAndAttackOnServer(HitResult.ImpactPoint, Cast<AYMobaGamePawn>(HitResult.Actor));
 				return;
 			}
 		}
@@ -119,7 +119,7 @@ bool AYMobaGamePlayerController::VerifyMouseClickOnServer_Validate(const FVector
 
 void AYMobaGamePlayerController::MoveToTouchLocation(const ETouchIndex::Type FingerIndex, const FVector Location)
 {
-	if (AMobaPawn* MyPawn = Cast<AMobaPawn>(GetPawn())) {
+	if (AYMobaGamePawn* MyPawn = Cast<AYMobaGamePawn>(GetPawn())) {
 		FVector2D ScreenSpaceLocation(Location);
 
 		// Trace to see what is under the touch location

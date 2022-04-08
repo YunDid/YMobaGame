@@ -4,10 +4,10 @@
 
 namespace MethodUnit
 {
-	AMobaGameState* GetMobaGameState(UWorld* CurrentWorld) 
+	AYMobaGameState* GetYMobaGameState(UWorld* CurrentWorld) 
 	{
 		if (CurrentWorld) {
-			return CurrentWorld->GetGameState<AMobaGameState>();
+			return CurrentWorld->GetGameState<AYMobaGameState>();
 		}
 
 		return nullptr;

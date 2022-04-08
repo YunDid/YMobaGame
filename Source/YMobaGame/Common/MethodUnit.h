@@ -3,9 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "../MobaGameState.h"
+#include "../YMobaGameState.h"
 
 namespace MethodUnit
 {
-	AMobaGameState* GetMobaGameState(UWorld* CurrentWorld);
+	AYMobaGameState* GetYMobaGameState(UWorld* CurrentWorld);
 }

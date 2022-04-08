@@ -43,8 +43,8 @@
 
 > TopDown 模板下的角色控制，采用了暗黑系列的控制，摄像机将跟随角色一并移动，但是这并不是 Moba 游戏所期望的场景.
 
-1. 在原先 Charater 基础上，再向上抽离出一个 MobaPawn，负责管理摄像机与游标.
-2. 角色的逻辑控制通过 MobaPawn 复用 一个 Charater 来实现.
+1. 在原先 Charater 基础上，再向上抽离出一个 YMobaGamePawn，负责管理摄像机与游标.
+2. 角色的逻辑控制通过 YMobaGamePawn 复用 一个 Charater 来实现.
 
 ```c++ 
 // Fill out your copyright notice in the Description page of Project Settings.
@@ -53,13 +53,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
-#include "MobaGameState.h"
-#include "MobaPawn.generated.h"
+#include "YMobaGameState.h"
+#include "YMobaGamePawn.generated.h"
 
 class AYMobaGameCharacter;
 
 UCLASS()
-class YMOBAGAME_API AMobaPawn : public APawn
+class YMOBAGAME_API AYMobaGamePawn : public APawn
 {
 	GENERATED_BODY()
 
@@ -71,7 +71,7 @@ public:
 
 public:
 	// Sets default values for this pawn's properties
-	AMobaPawn();
+	AYMobaGamePawn();
 
 protected:
 	// Called when the game starts or when spawned
@@ -120,9 +120,9 @@ protected:
 	//用于角色逻辑控制的 Character
 	/*
 		目的: 实现 摄像机+游标逻辑 与 角色逻辑 控制的解耦
-		方式: 1. AMobaPawn 控制 摄像机+游标逻辑
+		方式: 1. AYMobaGamePawn 控制 摄像机+游标逻辑
 			  2. MobaGameCharacter 控制 角色逻辑
-			  3. AMobaPawn 复用 MobaGameCharacter 实现角色的实例化
+			  3. AYMobaGamePawn 复用 MobaGameCharacter 实现角色的实例化
 	*/
 	AYMobaGameCharacter* MobaGameCharacter;
 };
@@ -133,8 +133,8 @@ protected:
 
 > Moba 需要根据鼠标点击位置，完成实时角色的移动.
 
-1. MobaPawn 仅仅表示可被控制的概念，提供基本的移动借口，由 PlayerControler 完成控制.
-2. MobaPawn 下 MobaGameCharacter 提供移动接口
+1. YMobaGamePawn 仅仅表示可被控制的概念，提供基本的移动借口，由 PlayerControler 完成控制.
+2. YMobaGamePawn 下 MobaGameCharacter 提供移动接口
 3. 获取鼠标点击位置与角色位置的距离.
 4. \>120.0f 则通过 SimpleMoveToLocation(...)完成角色的移动.
 5. 否则不发生移动.
@@ -176,23 +176,23 @@ protected:
 
 1. 基于 FTableRowBase 创建可配置的条目，例如 CharacterID 与 Character 蓝图实例类型，FCharacterTable.
 
-2. 由 MobaGameState 完成 UDataTable 数据表下 FCharacterTable 条目数据的存储，与可通过ID访问接口的暴露.
+2. 由 YMobaGameState 完成 UDataTable 数据表下 FCharacterTable 条目数据的存储，与可通过ID访问接口的暴露.
 
-   > 配置表数据存放于以TArray形式 MobaGameState 下
+   > 配置表数据存放于以TArray形式 YMobaGameState 下
    >
-   > - MobaGameState 需要先由 static ConstructorHelpers::FObjectFinder\<UDataTable\> 获取到的 UDataTable 数据表格
+   > - YMobaGameState 需要先由 static ConstructorHelpers::FObjectFinder\<UDataTable\> 获取到的 UDataTable 数据表格
    > - 获取该 UDataTable 数据表格下的所有 FCharacterTable 数据条目，以 TArray 数据存储起来.
 
-3. MobaPawn 通过 MobaGameState 暴露的接口，完成对角色配置的获取，进而设置实际的 DefaultPawn.
+3. YMobaGamePawn 通过 YMobaGameState 暴露的接口，完成对角色配置的获取，进而设置实际的 DefaultPawn.
 
 `注意:`
 
 1. 通过 CharacterID 获取 角色类型时，先通过单例获取 FCharaterTable_Cache，再遍历其查找对应ID下的角色类型.
-2. MobaPawn 使用的 ID 将使用外部文件设置，方便配置.
+2. YMobaGamePawn 使用的 ID 将使用外部文件设置，方便配置.
 
 **Questions:** 
 
-- DefaultPawn 与 MobaPawn 是什么关系？
+- DefaultPawn 与 YMobaGamePawn 是什么关系？
 
 ## Attack Logic / 攻击逻辑
 

@@ -5,17 +5,17 @@
 #include "CoreMinimal.h"
 #include "Table/CharacterTable.h"
 #include "GameFramework/GameStateBase.h"
-#include "MobaGameState.generated.h"
+#include "YMobaGameState.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class YMOBAGAME_API AMobaGameState : public AGameStateBase
+class YMOBAGAME_API AYMobaGameState : public AGameStateBase
 {
 	GENERATED_BODY()
 public:
-	AMobaGameState();
+	AYMobaGameState();
 
 	//获取当前使用的配置表.
 	const FCharacterTable* GetFCharaterTableByID(const int64& CharaterID);

@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
-#include "MobaGameState.h"
-#include "MobaPawn.generated.h"
+#include "YMobaGameState.h"
+#include "YMobaGamePawn.generated.h"
 
 class AYMobaGameCharacter;
 
 UCLASS()
-class YMOBAGAME_API AMobaPawn : public APawn
+class YMOBAGAME_API AYMobaGamePawn : public APawn
 {
 	GENERATED_BODY()
 
@@ -22,7 +22,7 @@ public:
 
 public:
 	// Sets default values for this pawn's properties
-	AMobaPawn();
+	AYMobaGamePawn();
 
 protected:
 	// Called when the game starts or when spawned
@@ -67,14 +67,14 @@ public:
 		void CharactorMoveToOnServer(const FVector& DirectionLocation);
 
 	UFUNCTION(server, reliable, WithValidation)
-		void MoveToEnemyAndAttackOnServer(const FVector& DirectionLocation, const AMobaPawn* Enemy);
+		void MoveToEnemyAndAttackOnServer(const FVector& DirectionLocation, const AYMobaGamePawn* Enemy);
 protected:
 	//用于角色逻辑控制的 Character
 	/*
 		目的: 实现 摄像机+游标逻辑 与 角色逻辑 控制的解耦
-		方式: 1. AMobaPawn 控制 摄像机+游标逻辑
+		方式: 1. AYMobaGamePawn 控制 摄像机+游标逻辑
 			  2. MobaGameCharacter 控制 角色逻辑
-			  3. AMobaPawn 复用 MobaGameCharacter 实现角色的实例化
+			  3. AYMobaGamePawn 复用 MobaGameCharacter 实现角色的实例化
 	*/
 	AYMobaGameCharacter* MobaGameCharacter;
 };
