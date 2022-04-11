@@ -2,7 +2,7 @@
 
 
 #include "YMobaGamePawn.h"
-#include "YMobaGameCharacter.h"
+#include "Character/Character_Instance/YMobaGameCharacter.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Camera/CameraComponent.h"
 #include "Components/DecalComponent.h"
