@@ -23,6 +23,8 @@ public:
 
 	//ÆÕÍ¨¹¥»÷.
 	void CommonAttack(TWeakObjectPtr<AYMobaGameCharacter> Enemy);
+	void SimpleMoverTo(const FVector& DirectionLocation);
+	void SetAttackTarget(AYMobaGameCharacter* Enemy);
 
 protected:
 	// Called when the game starts or when spawned

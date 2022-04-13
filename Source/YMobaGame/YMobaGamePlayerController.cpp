@@ -96,7 +96,7 @@ void AYMobaGamePlayerController::VerifyMouseClickOnServer_Implementation(const F
 		if (GetWorld()->LineTraceSingleByChannel(HitResult, WorldOrigin, WorldOrigin + WorldDirection * HitResultTraceDistance, ECC_GameTraceChannel1, CollisionQueryParams)) {
 			if (HitResult.bBlockingHit) {
 				//¼ì²âµ½¾ÍÒÆ¶¯¹¥»÷
-				MyPawn->MoveToEnemyAndAttackOnServer(HitResult.ImpactPoint, Cast<AYMobaGamePawn>(HitResult.Actor));
+				MyPawn->MoveToEnemyAndAttackOnServer(HitResult.ImpactPoint, Cast<APawn>(HitResult.Actor));
 				return;
 			}
 		}

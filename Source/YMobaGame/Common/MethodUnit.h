@@ -7,5 +7,7 @@
 
 namespace MethodUnit
 {
-	AYMobaGameState* GetYMobaGameState(UWorld* CurrentWorld);
+	AYMobaGameState* GetYMobaGameState_Unit(UWorld* CurrentWorld);
+
+	const FCharacterTable* GetFCharaterTableByID_Unit(UWorld* CurrentWorld, const int64& CharaterID);
 }

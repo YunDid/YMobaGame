@@ -67,7 +67,7 @@ public:
 		void CharactorMoveToOnServer(const FVector& DirectionLocation);
 
 	UFUNCTION(server, reliable, WithValidation)
-		void MoveToEnemyAndAttackOnServer(const FVector& DirectionLocation, const AYMobaGamePawn* Enemy);
+		void MoveToEnemyAndAttackOnServer(const FVector& DirectionLocation, const APawn* Enemy);
 protected:
 	//用于角色逻辑控制的 Character
 	/*

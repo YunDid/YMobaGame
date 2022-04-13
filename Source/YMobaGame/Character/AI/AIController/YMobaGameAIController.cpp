@@ -6,7 +6,7 @@
 AYMobaGameAIController::AYMobaGameAIController()
 {
 	//找寻行为树资源.
-	static ConstructorHelpers::FObjectFinder<UBehaviorTree> UUBehaviorTree_Ins(TEXT("/Game/Tables/CharacterTable"));
+	static ConstructorHelpers::FObjectFinder<UBehaviorTree> UUBehaviorTree_Ins(TEXT("/Game/TopDownCPP/AI/YMobaAI_BT"));
 	BTAsset = UUBehaviorTree_Ins.Object;
 }
 
@@ -18,6 +18,18 @@ void AYMobaGameAIController::CommonAttack(TWeakObjectPtr<AYMobaGameCharacter> En
 	if (CurrentCharacter) {
 		CurrentCharacter->CommonAttack(EnemyCharacter);
 	}
+}
+
+void AYMobaGameAIController::SimpleMoverTo(const FVector& DirectionLocation) 
+{
+	//由 AI_BT 控制的角色逻辑，只需要赋值任务结点需要的黑板条目键值即可.
+	GetBlackboardComponent()->SetValueAsVector("Location", DirectionLocation);
+}
+
+void AYMobaGameAIController::SetAttackTarget(AYMobaGameCharacter* Enemy) {
+	GetBlackboardComponent()->SetValueAsObject("Target", Enemy);
+
+	EnemyCharacter = Enemy;
 }
 
 void AYMobaGameAIController::BeginPlay()

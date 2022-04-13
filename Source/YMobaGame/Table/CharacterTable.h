@@ -17,6 +17,11 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Character Class")
 	int64 CharacterID;
 
+	//Character ÊµÀý
 	UPROPERTY(EditDefaultsOnly, Category = "Character Class")
 	TSubclassOf<APawn> CharacterClass;
+
+	//Á¬»÷¶¯»­
+	UPROPERTY(EditDefaultsOnly, Category = "Character Class")
+	TArray<UAnimMontage*> CommonAttack_Animation;
 };

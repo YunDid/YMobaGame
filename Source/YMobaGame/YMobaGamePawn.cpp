@@ -13,6 +13,7 @@
 #include "Materials/Material.h"
 #include "Blueprint/AIBlueprintHelperLibrary.h"
 #include "Common/MethodUnit.h"
+#include "Character/AI/AIController/YMobaGameAIController.h"
 #include "Engine/World.h"
 
 // Sets default values
@@ -71,7 +72,7 @@ void AYMobaGamePawn::BeginPlay()
 	if (GetLocalRole() == ROLE_Authority) {
 
 		//获取 GameState 实例
-		AYMobaGameState* YMobaGameState =  MethodUnit::GetYMobaGameState(GetWorld());
+		AYMobaGameState* YMobaGameState =  MethodUnit::GetYMobaGameState_Unit(GetWorld());
 
 		if (YMobaGameState) {
 
@@ -87,6 +88,10 @@ void AYMobaGamePawn::BeginPlay()
 			//生成 Charactor 实例
 			if (DefaultPawnClass) {
 				MobaGameCharacter = GetWorld()->SpawnActor<AYMobaGameCharacter>(DefaultPawnClass, GetActorLocation(), GetActorRotation());
+				if (MobaGameCharacter) {
+					//初始化 Character 下的 CharacterID.
+					MobaGameCharacter->InitCharacterID(CharaterID);
+				}
 			}
 		}
 		
@@ -146,19 +151,32 @@ void AYMobaGamePawn::CharactorMoveToOnServer_Implementation(const FVector& Direc
 
 		// We need to issue move command only if far enough in order for walk animation to play correctly
 		if ((Distance > 120.0f))
-		{
-			UAIBlueprintHelperLibrary::SimpleMoveToLocation(MobaGameCharacter->GetController(), DirectionLocation);
+		{			
+			//启用 AIController 下由 AI 行为树控制的角色移动，方便维护.
+			AYMobaGameAIController* AIController = Cast<AYMobaGameAIController>(MobaGameCharacter->GetController());
+			if (AIController) {
+				AIController->SimpleMoverTo(DirectionLocation);
+			}
+
+			//弃用 Pawn 由蓝图控制的角色移动，不方便维护.
+			//UAIBlueprintHelperLibrary::SimpleMoveToLocation(MobaGameCharacter->GetController(), DirectionLocation);
 		}
 	}
 }
 
-void AYMobaGamePawn::MoveToEnemyAndAttackOnServer_Implementation(const FVector& DirectionLocation, const AYMobaGamePawn* Enemy)
+void AYMobaGamePawn::MoveToEnemyAndAttackOnServer_Implementation(const FVector& DirectionLocation, const APawn* Enemy)
 {
-
+	if (MobaGameCharacter) {
+		if (AYMobaGameAIController* AIController = Cast<AYMobaGameAIController>(MobaGameCharacter->GetController())) {
+			AIController->SetAttackTarget(Cast<AYMobaGameCharacter>(const_cast<APawn*> (Enemy)));
+		}
+	}
+	
 }
 
-bool AYMobaGamePawn::MoveToEnemyAndAttackOnServer_Validate(const FVector& DirectionLocation, const AYMobaGamePawn* Enemy)
+bool AYMobaGamePawn::MoveToEnemyAndAttackOnServer_Validate(const FVector& DirectionLocation, const APawn* Enemy)
 {
-	return Enemy != nullptr && Enemy != this;
+	//return Enemy != nullptr && Enemy != MobaGameCharacter;
+	return Enemy != nullptr;
 }
 

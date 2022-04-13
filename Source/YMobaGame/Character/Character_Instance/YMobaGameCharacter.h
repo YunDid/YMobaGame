@@ -23,5 +23,18 @@ public:
 public:
 	void CommonAttack(TWeakObjectPtr<AYMobaGameCharacter> Enemy);
 
+	UFUNCTION(NetMulticast,unreliable)
+	void MutiCastPlayerAnimMontage(UAnimMontage* AnimMontage_Ins, float PlayRate = 1.0f, FName StartSectionName = NAME_None);
+
+	void InitCharacterID(const int64& ID);
+
+protected:
+	//是否处于攻击状态.
+	bool bAttacking;
+	//普攻所处阶段.
+	uint8 Attack_Count;
+	//角色ID，便于读取对应的动画.
+	int64 CharacterID;
+
 };
 

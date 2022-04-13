@@ -5,9 +5,11 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PlayerController.h"
+#include "../../Common/MethodUnit.h"
 #include "Engine/World.h"
 
-AYMobaGameCharacter::AYMobaGameCharacter()
+AYMobaGameCharacter::AYMobaGameCharacter():
+	bAttacking(false), Attack_Count(0), CharacterID(INDEX_NONE)
 {
 	// Set size for player capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
@@ -44,9 +46,41 @@ void AYMobaGameCharacter::BeginPlay()
 	}
 }
 
+void AYMobaGameCharacter::InitCharacterID(const int64& ID) {
+	CharacterID = ID;
+}
+
 void AYMobaGameCharacter::CommonAttack(TWeakObjectPtr<AYMobaGameCharacter> Enemy)
 {
-	
+	if (Enemy.IsValid()) {
+		//获取 CharacterID 下的配置表项.
+		if (const FCharacterTable* CharacterConfig =  MethodUnit::GetFCharaterTableByID_Unit(GetWorld(), CharacterID)) {
+			//判断当前普攻处于第几阶段.
+			if (Attack_Count < CharacterConfig->CommonAttack_Animation.Num()) {
+
+				//获取 CharacterID 下的具体普攻动画.
+				if (UAnimMontage* Attack_AniMontage = CharacterConfig->CommonAttack_Animation[Attack_Count]) {
+					//播放攻击动画.
+					MutiCastPlayerAnimMontage(Attack_AniMontage);
+
+					//普攻状态参数更新.
+					if (Attack_Count == CharacterConfig->CommonAttack_Animation.Num() - 1) {
+						//若已处于倒数第二阶段，则重置.
+						Attack_Count = 0;
+					}
+					else {
+						Attack_Count++;
+					}
+				}
+			}
+		}
+	}
+}
+
+void AYMobaGameCharacter::MutiCastPlayerAnimMontage_Implementation(UAnimMontage* AnimMontage_Ins, float PlayRate = 1.0f, FName StartSectionName = NAME_None) {
+	if (AnimMontage_Ins) {
+		PlayAnimMontage(AnimMontage_Ins, PlayRate, StartSectionName);
+	}
 }
 
 
