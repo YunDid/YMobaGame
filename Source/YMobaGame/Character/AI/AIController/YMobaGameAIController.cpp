@@ -22,6 +22,8 @@ void AYMobaGameAIController::CommonAttack(TWeakObjectPtr<AYMobaGameCharacter> En
 
 void AYMobaGameAIController::SimpleMoverTo(const FVector& DirectionLocation) 
 {
+	//清空黑板中的 Targert,使行为树更新判断.
+	SetAttackTarget(nullptr);
 	//由 AI_BT 控制的角色逻辑，只需要赋值任务结点需要的黑板条目键值即可.
 	GetBlackboardComponent()->SetValueAsVector("Location", DirectionLocation);
 }

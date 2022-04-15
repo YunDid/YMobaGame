@@ -28,7 +28,7 @@ void UYMobaGameAttack_BTTaskNode::InitializeFromAsset(UBehaviorTree& Asset)
 {
 	Super::InitializeFromAsset(Asset);
 	
-	//？？？？？？？？？？？？？？？？？？？？？？？？？？？注册？？？信息登记？
+	//由黑板资源初始化黑板栏目成员.
 	if (UBlackboardData* SourceData_BBAsset = GetBlackboardAsset())
 	{
 		Blackboard_Actor.ResolveSelectedKey(*SourceData_BBAsset);

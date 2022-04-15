@@ -36,7 +36,6 @@ void UYMobaGame_BTService::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* No
 				//根据黑板栏目成员获取 Target 栏目的值.
 				AYMobaGameCharacter* Enemy = Cast<AYMobaGameCharacter>(BlackboardComponent_Ins->GetValueAsObject(Blackboard_Target.SelectedKeyName));
 				
-				//足够大，使得第一个 selector 能先走左1分支移动.
 				float Distance_EM = 1001.0f;
 
 				//若获取成功，则说明已通过鼠标点击强制设置了敌人.
@@ -53,7 +52,6 @@ void UYMobaGame_BTService::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* No
 				}
 
 				//将与当前敌人的距离写回黑板.
-				//即使没有敌人，也应更新 Distance.
 				BlackboardComponent_Ins->SetValueAsFloat(Blackboard_Distance.SelectedKeyName, Distance_EM);
 			}
 		}
