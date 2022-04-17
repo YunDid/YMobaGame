@@ -50,6 +50,10 @@ void AYMobaGameCharacter::InitCharacterID(const int64& ID) {
 	CharacterID = ID;
 }
 
+int64 AYMobaGameCharacter::GetCharacterID() {
+	return CharacterID;
+}
+
 void AYMobaGameCharacter::CommonAttack(TWeakObjectPtr<AYMobaGameCharacter> Enemy)
 {
 	if (Enemy.IsValid()) {

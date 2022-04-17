@@ -28,6 +28,8 @@ public:
 
 	void InitCharacterID(const int64& ID);
 
+	int64 GetCharacterID();
+
 protected:
 	//ÊÇ·ñ´¦ÓÚ¹¥»÷×´Ì¬.
 	bool bAttacking;

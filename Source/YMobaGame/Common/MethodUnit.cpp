@@ -23,4 +23,12 @@ namespace MethodUnit
 
 		return nullptr;
 	}
+
+	const TArray<FCharacterTable*>* GetFCharaterTable_Cache_Unit(UWorld* CurrentWorld) {
+		//»ñÈ¡ GameState.
+		AYMobaGameState* YMobaGameState_Ins = GetYMobaGameState_Unit(CurrentWorld);
+
+		return YMobaGameState_Ins->GetFCharaterTable_Cache();
+	}
+
 }

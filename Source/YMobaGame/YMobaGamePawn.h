@@ -66,7 +66,7 @@ public:
 	UFUNCTION(server, reliable)
 		void CharactorMoveToOnServer(const FVector& DirectionLocation);
 
-	UFUNCTION(server, reliable, WithValidation)
+	UFUNCTION(server, reliable)
 		void MoveToEnemyAndAttackOnServer(const FVector& DirectionLocation, const APawn* Enemy);
 protected:
 	//用于角色逻辑控制的 Character

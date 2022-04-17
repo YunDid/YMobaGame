@@ -17,6 +17,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Character Class")
 	int64 CharacterID;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Character Class")
+	float AttackRadius;
+
 	//Character ÊµÀý
 	UPROPERTY(EditDefaultsOnly, Category = "Character Class")
 	TSubclassOf<APawn> CharacterClass;

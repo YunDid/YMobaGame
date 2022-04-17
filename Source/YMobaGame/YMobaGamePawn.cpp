@@ -173,10 +173,3 @@ void AYMobaGamePawn::MoveToEnemyAndAttackOnServer_Implementation(const FVector& 
 	}
 	
 }
-
-bool AYMobaGamePawn::MoveToEnemyAndAttackOnServer_Validate(const FVector& DirectionLocation, const APawn* Enemy)
-{
-	//return Enemy != nullptr && Enemy != MobaGameCharacter;
-	return Enemy != nullptr;
-}
-
