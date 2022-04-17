@@ -3,18 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "../AIController/YMobaGameAIController.h"
-#include "BehaviorTree/BTTaskNode.h"
-#include "BehaviorTree/BlackboardComponent.h"
-#include "BehaviorTree/Blackboard/BlackboardKeyType_Object.h"
-#include "../../Character_Instance/YMobaGameCharacter.h"
-#include "YMobaGameAttack_BTTaskNode.generated.h"
+#include "BehaviorTree/Tasks/BTTask_MoveTo.h"
+#include "BTTaskNode_YMobaGameMoveTo.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class YMOBAGAME_API UYMobaGameAttack_BTTaskNode : public UBTTaskNode
+class YMOBAGAME_API UBTTaskNode_YMobaGameMoveTo : public UBTTask_MoveTo
 {
 	GENERATED_BODY()
 
@@ -40,6 +36,5 @@ public:
 public:
 	//当前任务节点下的需要的黑板条目，即某个键值对.
 	UPROPERTY(EditAnywhere, Category = Blackboard)
-	struct FBlackboardKeySelector Blackboard_Actor;
-	
+	struct FBlackboardKeySelector Blackboard_SelfActor;
 };
