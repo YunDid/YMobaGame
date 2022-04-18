@@ -27,4 +27,17 @@ public:
 	//连击动画
 	UPROPERTY(EditDefaultsOnly, Category = "Character Class")
 	TArray<UAnimMontage*> CommonAttack_Animation;
+
+	//技能动画
+	UPROPERTY(EditDefaultsOnly, Category = "Character Skill Class")
+	UAnimMontage* SkillAttack_Q_Animation;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Character Skill Class")
+	UAnimMontage* SkillAttack_W_Animation;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Character Skill Class")
+	UAnimMontage* SkillAttack_E_Animation;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Character Skill Class")
+	UAnimMontage* SkillAttack_R_Animation;
 };

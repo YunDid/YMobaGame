@@ -30,6 +30,27 @@ void AYMobaGamePlayerController::PlayerTick(float DeltaTime)
 	}
 }
 
+void AYMobaGamePlayerController::SkillAttack_Q_Pressed()
+{
+	if (AYMobaGamePawn* MyPawn = Cast<AYMobaGamePawn>(GetPawn())) {
+		
+	}
+}
+void AYMobaGamePlayerController::SkillAttack_Q_Released()
+{}
+void AYMobaGamePlayerController::SkillAttack_W_Pressed()
+{}
+void AYMobaGamePlayerController::SkillAttack_W_Released()
+{}
+void AYMobaGamePlayerController::SkillAttack_E_Pressed()
+{}
+void AYMobaGamePlayerController::SkillAttack_E_Released()
+{}
+void AYMobaGamePlayerController::SkillAttack_R_Pressed()
+{}
+void AYMobaGamePlayerController::SkillAttack_R_Released()
+{}
+
 void AYMobaGamePlayerController::SetupInputComponent()
 {
 	// set up gameplay key bindings
@@ -41,6 +62,19 @@ void AYMobaGamePlayerController::SetupInputComponent()
 	// support touch devices 
 	InputComponent->BindTouch(EInputEvent::IE_Pressed, this, &AYMobaGamePlayerController::MoveToTouchLocation);
 	InputComponent->BindTouch(EInputEvent::IE_Repeat, this, &AYMobaGamePlayerController::MoveToTouchLocation);
+
+	//Skills Attack.
+	InputComponent->BindAction("KeyCode_Q", IE_Pressed, this, &AYMobaGamePlayerController::SkillAttack_Q_Pressed);
+	InputComponent->BindAction("KeyCode_Q", IE_Released, this, &AYMobaGamePlayerController::SkillAttack_Q_Released);
+
+	InputComponent->BindAction("KeyCode_W", IE_Pressed, this, &AYMobaGamePlayerController::SkillAttack_W_Pressed);
+	InputComponent->BindAction("KeyCode_W", IE_Released, this, &AYMobaGamePlayerController::SkillAttack_W_Released);
+
+	InputComponent->BindAction("KeyCode_E", IE_Pressed, this, &AYMobaGamePlayerController::SkillAttack_E_Pressed);
+	InputComponent->BindAction("KeyCode_E", IE_Released, this, &AYMobaGamePlayerController::SkillAttack_E_Released);
+
+	InputComponent->BindAction("KeyCode_R", IE_Pressed, this, &AYMobaGamePlayerController::SkillAttack_R_Pressed);
+	InputComponent->BindAction("KeyCode_R", IE_Released, this, &AYMobaGamePlayerController::SkillAttack_R_Released);
 
 	InputComponent->BindAction("ResetVR", IE_Pressed, this, &AYMobaGamePlayerController::OnResetVR);
 }

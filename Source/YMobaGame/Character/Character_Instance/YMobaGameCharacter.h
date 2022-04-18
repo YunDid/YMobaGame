@@ -23,6 +23,8 @@ public:
 public:
 	void CommonAttack(TWeakObjectPtr<AYMobaGameCharacter> Enemy);
 
+	void SkillAttack(KeyCode_Type KeyCode, const APawn* Enemy);
+
 	UFUNCTION(NetMulticast,unreliable)
 	void MutiCastPlayerAnimMontage(UAnimMontage* AnimMontage_Ins, float PlayRate = 1.0f, FName StartSectionName = NAME_None);
 

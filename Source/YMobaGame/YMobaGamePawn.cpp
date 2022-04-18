@@ -173,3 +173,10 @@ void AYMobaGamePawn::MoveToEnemyAndAttackOnServer_Implementation(const FVector& 
 	}
 	
 }
+
+void AYMobaGamePawn::SkillAttackOnServer_Implementation(KeyCode_Type KeyCode, const APawn* Enemy) {
+	if (MobaGameCharacter) {
+		
+	}
+}
+

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+#include "YMobaGameEnums.h"
 #include "YMobaGameState.h"
 #include "YMobaGamePawn.generated.h"
 
@@ -68,6 +69,9 @@ public:
 
 	UFUNCTION(server, reliable)
 		void MoveToEnemyAndAttackOnServer(const FVector& DirectionLocation, const APawn* Enemy);
+
+	UFUNCTION(server, reliable)
+		void SkillAttackOnServer(KeyCode_Type KeyCode, const APawn* Enemy);
 protected:
 	//用于角色逻辑控制的 Character
 	/*

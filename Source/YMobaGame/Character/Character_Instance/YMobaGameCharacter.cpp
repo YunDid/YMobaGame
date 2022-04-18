@@ -5,6 +5,7 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PlayerController.h"
+#include "../../YMobaGameEnums.h"
 #include "../../Common/MethodUnit.h"
 #include "Engine/World.h"
 
@@ -81,10 +82,25 @@ void AYMobaGameCharacter::CommonAttack(TWeakObjectPtr<AYMobaGameCharacter> Enemy
 	}
 }
 
-void AYMobaGameCharacter::MutiCastPlayerAnimMontage_Implementation(UAnimMontage* AnimMontage_Ins, float PlayRate = 1.0f, FName StartSectionName = NAME_None) {
+void AYMobaGameCharacter::MutiCastPlayerAnimMontage_Implementation(UAnimMontage* AnimMontage_Ins, float PlayRate = 1.0f, FName StartSectionName = NAME_None) 
+{
 	if (AnimMontage_Ins) {
 		PlayAnimMontage(AnimMontage_Ins, PlayRate, StartSectionName);
 	}
 }
+
+void AYMobaGameCharacter::SkillAttack(KeyCode_Type KeyCode, const APawn* Enemy)
+{
+	//获取 CharacterID 下的配置表项.
+	if (const FCharacterTable* CharacterConfig = MethodUnit::GetFCharaterTableByID_Unit(GetWorld(), CharacterID)) {
+		
+		////获取 CharacterID 下的具体普攻动画.
+		//if (UAnimMontage* Attack_AniMontage = CharacterConfig->CommonAttack_Animation[Attack_Count]) {
+		//	//播放攻击动画.
+		//	MutiCastPlayerAnimMontage(Attack_AniMontage);
+		//}
+	}
+}
+
 
 
