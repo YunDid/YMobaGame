@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTService.h"
-#include "BTService_YMobaGameService.generated.h"
+#include "YMobaGame_BTService.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class YMOBAGAME_API UBTService_YMobaGameService : public UBTService
+class YMOBAGAME_API UYMobaGame_BTService : public UBTService
 {
 	GENERATED_BODY()
 	

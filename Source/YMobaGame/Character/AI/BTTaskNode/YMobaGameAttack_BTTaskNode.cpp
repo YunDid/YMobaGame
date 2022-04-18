@@ -1,9 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "BTTaskNode_YMobaGameAttack.h"
+#include "YMobaGameAttack_BTTaskNode.h"
 
-EBTNodeResult::Type UBTTaskNode_YMobaGameAttack::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) 
+EBTNodeResult::Type UYMobaGameAttack_BTTaskNode::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) 
 {
 	//判断任务节点所需的黑板条目类型是否为黑板允许的条目类型.
 	if (Blackboard_Actor.SelectedKeyType == UBlackboardKeyType_Object::StaticClass()) {
@@ -24,7 +24,7 @@ EBTNodeResult::Type UBTTaskNode_YMobaGameAttack::ExecuteTask(UBehaviorTreeCompon
 	return EBTNodeResult::Failed;
 }
 
-void UBTTaskNode_YMobaGameAttack::InitializeFromAsset(UBehaviorTree& Asset)
+void UYMobaGameAttack_BTTaskNode::InitializeFromAsset(UBehaviorTree& Asset)
 {
 	Super::InitializeFromAsset(Asset);
 	

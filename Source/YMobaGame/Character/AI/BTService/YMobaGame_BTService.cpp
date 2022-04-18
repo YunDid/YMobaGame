@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "BTService_YMobaGameService.h"
+#include "YMobaGame_BTService.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "BehaviorTree/Blackboard/BlackboardKeyType_Object.h"
 #include "BehaviorTree/Blackboard/BlackboardKeyType_Vector.h"
@@ -10,10 +10,8 @@
 #include "../AIController/YMobaGameAIController.h"
 
 
-void UBTService_YMobaGameService::InitializeFromAsset(UBehaviorTree& Asset)
+void UYMobaGame_BTService::InitializeFromAsset(UBehaviorTree& Asset)
 {
-	Super::InitializeFromAsset(Asset);
-
 	if (UBlackboardData* SourceData_BBAsset = GetBlackboardAsset())
 	{
 		Blackboard_Target.ResolveSelectedKey(*SourceData_BBAsset);
@@ -22,7 +20,7 @@ void UBTService_YMobaGameService::InitializeFromAsset(UBehaviorTree& Asset)
 	}
 }
 
-void UBTService_YMobaGameService::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
+void UYMobaGame_BTService::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
 	Super::TickNode(OwnerComp, NodeMemory, DeltaSeconds);
 
@@ -39,7 +37,7 @@ void UBTService_YMobaGameService::TickNode(UBehaviorTreeComponent& OwnerComp, ui
 				AYMobaGameCharacter* Enemy = Cast<AYMobaGameCharacter>(BlackboardComponent_Ins->GetValueAsObject(Blackboard_Target.SelectedKeyName));
 				
 				//足够大，使得第一个 selector 能先走左1分支移动.
-				float Distance_EM = 99999.0f;
+				float Distance_EM = 1001.0f;
 
 				//若获取成功，则说明已通过鼠标点击强制设置了敌人.
 				if (Enemy) {					
