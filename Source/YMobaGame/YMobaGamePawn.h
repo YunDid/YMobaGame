@@ -65,13 +65,13 @@ private:
 public:
 	//TCP + 专属服务器
 	UFUNCTION(server, reliable)
-		void CharactorMoveToOnServer(const FVector& DirectionLocation);
+	void CharactorMoveToOnServer(const FVector& DirectionLocation);
 
 	UFUNCTION(server, reliable)
-		void MoveToEnemyAndAttackOnServer(const FVector& DirectionLocation, const APawn* Enemy);
+	void MoveToEnemyAndAttackOnServer(const FVector& DirectionLocation, const APawn* Enemy);
 
-	UFUNCTION(server, reliable)
-		void SkillAttackOnServer(KeyCode_Type KeyCode, const APawn* Enemy);
+	void SkillAttack(KeyCode_Type KeyCode, const APawn* Enemy);
+
 protected:
 	//用于角色逻辑控制的 Character
 	/*

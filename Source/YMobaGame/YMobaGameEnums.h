@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 
-UENUM()
 enum class KeyCode_Type : uint8
 {
 	KeyCode_Q,

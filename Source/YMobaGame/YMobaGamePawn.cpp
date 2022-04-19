@@ -174,9 +174,12 @@ void AYMobaGamePawn::MoveToEnemyAndAttackOnServer_Implementation(const FVector& 
 	
 }
 
-void AYMobaGamePawn::SkillAttackOnServer_Implementation(KeyCode_Type KeyCode, const APawn* Enemy) {
+void AYMobaGamePawn::SkillAttack(KeyCode_Type KeyCode, const APawn* Enemy) {
+
+	//调用 MobaGameCharacter 底层技能动画逻辑.
 	if (MobaGameCharacter) {
-		
+		MobaGameCharacter->SkillAttack(KeyCode, Cast<AYMobaGameCharacter>(const_cast<APawn*>(Enemy)));
 	}
+
 }
 

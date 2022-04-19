@@ -30,26 +30,41 @@ void AYMobaGamePlayerController::PlayerTick(float DeltaTime)
 	}
 }
 
-void AYMobaGamePlayerController::SkillAttack_Q_Pressed()
+void AYMobaGamePlayerController::SkillAttack_Q_Pressed_Implementation()
 {
 	if (AYMobaGamePawn* MyPawn = Cast<AYMobaGamePawn>(GetPawn())) {
-		
+		MyPawn->SkillAttack(KeyCode_Type::KeyCode_Q, nullptr);
 	}
 }
-void AYMobaGamePlayerController::SkillAttack_Q_Released()
-{}
-void AYMobaGamePlayerController::SkillAttack_W_Pressed()
-{}
-void AYMobaGamePlayerController::SkillAttack_W_Released()
-{}
-void AYMobaGamePlayerController::SkillAttack_E_Pressed()
-{}
-void AYMobaGamePlayerController::SkillAttack_E_Released()
-{}
-void AYMobaGamePlayerController::SkillAttack_R_Pressed()
-{}
-void AYMobaGamePlayerController::SkillAttack_R_Released()
-{}
+
+void AYMobaGamePlayerController::SkillAttack_Q_Released(){}
+
+void AYMobaGamePlayerController::SkillAttack_W_Pressed_Implementation()
+{
+	if (AYMobaGamePawn* MyPawn = Cast<AYMobaGamePawn>(GetPawn())) {
+		MyPawn->SkillAttack(KeyCode_Type::KeyCode_W, nullptr);
+	}
+}
+
+void AYMobaGamePlayerController::SkillAttack_W_Released(){}
+
+void AYMobaGamePlayerController::SkillAttack_E_Pressed_Implementation()
+{
+	if (AYMobaGamePawn* MyPawn = Cast<AYMobaGamePawn>(GetPawn())) {
+		MyPawn->SkillAttack(KeyCode_Type::KeyCode_E, nullptr);
+	}
+}
+
+void AYMobaGamePlayerController::SkillAttack_E_Released(){}
+
+void AYMobaGamePlayerController::SkillAttack_R_Pressed_Implementation()
+{
+	if (AYMobaGamePawn* MyPawn = Cast<AYMobaGamePawn>(GetPawn())) {
+		MyPawn->SkillAttack(KeyCode_Type::KeyCode_R, nullptr);
+	}
+}
+
+void AYMobaGamePlayerController::SkillAttack_R_Released(){}
 
 void AYMobaGamePlayerController::SetupInputComponent()
 {

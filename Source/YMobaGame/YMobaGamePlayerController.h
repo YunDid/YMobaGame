@@ -44,16 +44,19 @@ protected:
 public:
 
 	//¼üÅÌ¼¼ÄÜÓ³Éäº¯Êý.
-
+	UFUNCTION(server, reliable)
 	void SkillAttack_Q_Pressed();
 	void SkillAttack_Q_Released();
 
+	UFUNCTION(server, reliable)
 	void SkillAttack_W_Pressed();
 	void SkillAttack_W_Released();
 
+	UFUNCTION(server, reliable)
 	void SkillAttack_E_Pressed();
 	void SkillAttack_E_Released();
 
+	UFUNCTION(server, reliable)
 	void SkillAttack_R_Pressed();
 	void SkillAttack_R_Released();
 
