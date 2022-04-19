@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "../../YMobaGameEnums.h"
 #include "YMobaGameCharacter.generated.h"
 
 UCLASS(Blueprintable)
@@ -22,6 +23,10 @@ public:
 
 public:
 	void CommonAttack(TWeakObjectPtr<AYMobaGameCharacter> Enemy);
+
+	UAnimMontage* GetSkillAttackAnimation(KeyCode_Type KeyCode);
+
+	void SkillAttack(KeyCode_Type KeyCode, TWeakObjectPtr<AYMobaGameCharacter> Enemy);
 
 	UFUNCTION(NetMulticast,unreliable)
 	void MutiCastPlayerAnimMontage(UAnimMontage* AnimMontage_Ins, float PlayRate = 1.0f, FName StartSectionName = NAME_None);

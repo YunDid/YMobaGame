@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "YMobaGamePawn.h"
+#include "YMobaGameEnums.h"
 #include "GameFramework/PlayerController.h"
 #include "YMobaGamePlayerController.generated.h"
 
@@ -39,6 +40,25 @@ protected:
 
 	UFUNCTION(server, reliable, WithValidation)
 	void VerifyMouseClickOnServer(const FVector& WorldOrigin, const FVector& WorldDirection);
+
+public:
+
+	//¼üÅÌ¼¼ÄÜÓ³Éäº¯Êý.
+	UFUNCTION(server, reliable)
+	void SkillAttack_Q_Pressed();
+	void SkillAttack_Q_Released();
+
+	UFUNCTION(server, reliable)
+	void SkillAttack_W_Pressed();
+	void SkillAttack_W_Released();
+
+	UFUNCTION(server, reliable)
+	void SkillAttack_E_Pressed();
+	void SkillAttack_E_Released();
+
+	UFUNCTION(server, reliable)
+	void SkillAttack_R_Pressed();
+	void SkillAttack_R_Released();
 
 };
 

@@ -30,6 +30,42 @@ void AYMobaGamePlayerController::PlayerTick(float DeltaTime)
 	}
 }
 
+void AYMobaGamePlayerController::SkillAttack_Q_Pressed_Implementation()
+{
+	if (AYMobaGamePawn* MyPawn = Cast<AYMobaGamePawn>(GetPawn())) {
+		MyPawn->SkillAttack(KeyCode_Type::KeyCode_Q, nullptr);
+	}
+}
+
+void AYMobaGamePlayerController::SkillAttack_Q_Released(){}
+
+void AYMobaGamePlayerController::SkillAttack_W_Pressed_Implementation()
+{
+	if (AYMobaGamePawn* MyPawn = Cast<AYMobaGamePawn>(GetPawn())) {
+		MyPawn->SkillAttack(KeyCode_Type::KeyCode_W, nullptr);
+	}
+}
+
+void AYMobaGamePlayerController::SkillAttack_W_Released(){}
+
+void AYMobaGamePlayerController::SkillAttack_E_Pressed_Implementation()
+{
+	if (AYMobaGamePawn* MyPawn = Cast<AYMobaGamePawn>(GetPawn())) {
+		MyPawn->SkillAttack(KeyCode_Type::KeyCode_E, nullptr);
+	}
+}
+
+void AYMobaGamePlayerController::SkillAttack_E_Released(){}
+
+void AYMobaGamePlayerController::SkillAttack_R_Pressed_Implementation()
+{
+	if (AYMobaGamePawn* MyPawn = Cast<AYMobaGamePawn>(GetPawn())) {
+		MyPawn->SkillAttack(KeyCode_Type::KeyCode_R, nullptr);
+	}
+}
+
+void AYMobaGamePlayerController::SkillAttack_R_Released(){}
+
 void AYMobaGamePlayerController::SetupInputComponent()
 {
 	// set up gameplay key bindings
@@ -41,6 +77,19 @@ void AYMobaGamePlayerController::SetupInputComponent()
 	// support touch devices 
 	InputComponent->BindTouch(EInputEvent::IE_Pressed, this, &AYMobaGamePlayerController::MoveToTouchLocation);
 	InputComponent->BindTouch(EInputEvent::IE_Repeat, this, &AYMobaGamePlayerController::MoveToTouchLocation);
+
+	//Skills Attack.
+	InputComponent->BindAction("KeyCode_Q", IE_Pressed, this, &AYMobaGamePlayerController::SkillAttack_Q_Pressed);
+	InputComponent->BindAction("KeyCode_Q", IE_Released, this, &AYMobaGamePlayerController::SkillAttack_Q_Released);
+
+	InputComponent->BindAction("KeyCode_W", IE_Pressed, this, &AYMobaGamePlayerController::SkillAttack_W_Pressed);
+	InputComponent->BindAction("KeyCode_W", IE_Released, this, &AYMobaGamePlayerController::SkillAttack_W_Released);
+
+	InputComponent->BindAction("KeyCode_E", IE_Pressed, this, &AYMobaGamePlayerController::SkillAttack_E_Pressed);
+	InputComponent->BindAction("KeyCode_E", IE_Released, this, &AYMobaGamePlayerController::SkillAttack_E_Released);
+
+	InputComponent->BindAction("KeyCode_R", IE_Pressed, this, &AYMobaGamePlayerController::SkillAttack_R_Pressed);
+	InputComponent->BindAction("KeyCode_R", IE_Released, this, &AYMobaGamePlayerController::SkillAttack_R_Released);
 
 	InputComponent->BindAction("ResetVR", IE_Pressed, this, &AYMobaGamePlayerController::OnResetVR);
 }

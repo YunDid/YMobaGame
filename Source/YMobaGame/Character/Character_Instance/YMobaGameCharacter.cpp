@@ -81,10 +81,48 @@ void AYMobaGameCharacter::CommonAttack(TWeakObjectPtr<AYMobaGameCharacter> Enemy
 	}
 }
 
-void AYMobaGameCharacter::MutiCastPlayerAnimMontage_Implementation(UAnimMontage* AnimMontage_Ins, float PlayRate = 1.0f, FName StartSectionName = NAME_None) {
+UAnimMontage* AYMobaGameCharacter::GetSkillAttackAnimation(KeyCode_Type KeyCode) 
+{
+	//获取 CharacterID 下的配置表项.
+	if (const FCharacterTable* CharacterConfig = MethodUnit::GetFCharaterTableByID_Unit(GetWorld(), CharacterID)) {
+		
+		//根据键的类型，返回相应的技能动画.
+		switch (KeyCode) {
+		case KeyCode_Type::KeyCode_Q: {
+			return CharacterConfig->SkillAttack_Q_Animation;
+		}; break;
+		case KeyCode_Type::KeyCode_W: {
+			return CharacterConfig->SkillAttack_W_Animation;
+		}; break;
+		case KeyCode_Type::KeyCode_E: {
+			return CharacterConfig->SkillAttack_E_Animation;
+		}; break;
+		case KeyCode_Type::KeyCode_R: {
+			return CharacterConfig->SkillAttack_R_Animation;
+		}; break;
+		}
+	}
+
+	return nullptr;
+}
+
+
+void AYMobaGameCharacter::SkillAttack(KeyCode_Type KeyCode, TWeakObjectPtr<AYMobaGameCharacter> Enemy) 
+{	
+	//获取 KeyCode 下的具体技能动画.
+	if (UAnimMontage* Attack_AniMontage = GetSkillAttackAnimation(KeyCode)) {
+		//播放攻击动画.
+		MutiCastPlayerAnimMontage(Attack_AniMontage);
+	}
+}
+
+
+void AYMobaGameCharacter::MutiCastPlayerAnimMontage_Implementation(UAnimMontage* AnimMontage_Ins, float PlayRate = 1.0f, FName StartSectionName = NAME_None) 
+{
 	if (AnimMontage_Ins) {
 		PlayAnimMontage(AnimMontage_Ins, PlayRate, StartSectionName);
 	}
 }
+
 
 
