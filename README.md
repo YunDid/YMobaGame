@@ -144,6 +144,7 @@ protected:
 1. 角色移动逻辑需要服务端来验证并由服务端来实现.
 2. 游标UI的位置更新由客户端来完成.
 3. 屏幕跟随鼠标的移动由插件于客户端完成.
+4. Pawn 由蓝图控制的角色移动接口将弃用，角色移动逻辑将由行为树统一管理.
 
 ## 3. Packaging / 打包
 
@@ -170,7 +171,7 @@ protected:
 7. 将 LinuxServer 部署于 Linux 即可.
 8. Client 通过 Linux 的局域网 IP:7777 完成对服务器的请求访问.
 
-## Configuration Table / 配置表
+## 4. Configuration Table / 配置表
 
 > Ue 下创建的数据表格为 UDataTable 类型，该表格下的每行的条目数据为 FTableRowBase 类型.
 
@@ -178,7 +179,7 @@ protected:
 
 2. 由 YMobaGameState 完成 UDataTable 数据表下 FCharacterTable 条目数据的存储，与可通过ID访问接口的暴露.
 
-   > 配置表数据存放于以TArray形式 YMobaGameState 下
+   > 配置表数据以 TArray 形式存放于 YMobaGameState 下
    >
    > - YMobaGameState 需要先由 static ConstructorHelpers::FObjectFinder\<UDataTable\> 获取到的 UDataTable 数据表格
    > - 获取该 UDataTable 数据表格下的所有 FCharacterTable 数据条目，以 TArray 数据存储起来.
@@ -194,5 +195,156 @@ protected:
 
 - DefaultPawn 与 YMobaGamePawn 是什么关系？
 
-## Attack Logic / 攻击逻辑
+## 5. Attack Logic / 攻击逻辑
 
+> 鼠标点击后，通过按通道进行的射线检测，获取碰撞响应的对象.
+>
+> 若为 APawn 类的 Enemy，则将该 Enemy 设置至行为树黑板中，触发行为树管理下的普攻逻辑.
+>
+> 否则，将鼠标点击的位置转换为世界坐标设置至黑板中，触发移动行为树管理下的移动逻辑.
+
+`注意:`
+
+1. 不同角色有不同的攻击效果，但是将使用同一攻击框架.
+
+2. Moba 类角色的行为将使用 Behaviour Tree / 行为树 作统一行为框架.
+
+### Common Attack /  普通攻击
+
+> 广播对应攻击阶段下的蒙太奇动画.
+
+`注意:`
+
+1. 角色将具有 n 段普攻，因此角色将内置一个 Attack_Count 来记录当前攻击所处的阶段，通过 Attack_Count 来进行相应阶段的 CommonAttack_Animation[i] 动画的广播.
+2. 不同的角色将具有不同的配置属性，因此角色将内置 CharacterID 来获取相应配置表中的攻击配置属性，如动画蒙太奇.
+
+```c++ 
+void AYMobaGameCharacter::CommonAttack(TWeakObjectPtr<AYMobaGameCharacter> Enemy)
+{
+	if (Enemy.IsValid()) {
+		//获取 CharacterID 下的配置表项.
+		if (const FCharacterTable* CharacterConfig =  MethodUnit::GetFCharaterTableByID_Unit(GetWorld(), CharacterID)) {
+			//判断当前普攻处于第几阶段.
+			if (Attack_Count < CharacterConfig->CommonAttack_Animation.Num()) {
+
+				//获取 CharacterID 下的具体普攻动画.
+				if (UAnimMontage* Attack_AniMontage = CharacterConfig->CommonAttack_Animation[Attack_Count]) {
+					//播放攻击动画.
+					MutiCastPlayerAnimMontage(Attack_AniMontage);
+
+					//普攻状态参数更新.
+					if (Attack_Count == CharacterConfig->CommonAttack_Animation.Num() - 1) {
+						//若已处于倒数第二阶段，则重置.
+						Attack_Count = 0;
+					}
+					else {
+						Attack_Count++;
+					}
+				}
+			}
+		}
+	}
+}
+```
+
+#### Flow / 调用流
+
+> UYMobaGameAttack_BTTaskNode::ExecuteTask() -> AYMobaGameAIController::CommonAttack() -> AYMobaGameCharacter::CommonAttack()
+>
+> 普攻逻辑将于行为树下的任务节点中被执行，任务节点将获取 AI Controller 下的攻击接口，进而转调 Character 下的攻击具化逻辑.
+
+### Skill Attack / 技能攻击
+
+> 根据相应的 Keycode_Type 按键类型，获取配置表中相应的技能蒙太奇动画，并对其进行广播.
+
+`注意:`
+
+1. QWER 技能为操作映射，相应的事件函数应设置为 server 属性，由服务端来处理.
+2. Keycode_Type 枚举类型应为 enum class 且应继承自 uint8.
+
+```c++ 
+void AYMobaGameCharacter::SkillAttack(KeyCode_Type KeyCode, TWeakObjectPtr<AYMobaGameCharacter> Enemy) 
+{	
+	//获取 KeyCode 下的具体技能动画.
+	if (UAnimMontage* Attack_AniMontage = GetSkillAttackAnimation(KeyCode)) {
+		//播放攻击动画.
+		MutiCastPlayerAnimMontage(Attack_AniMontage);
+	}
+}
+```
+
+## Collision Overview / 碰撞概述
+
+> `Ue Document: Collision Responses and Trace Responses form the basis for how Unreal Engine 4 handles collision and ray casting during run time.`
+>
+> Collision Responses / 碰撞响应 与 Trace Responses / 追踪响应 构成了 Ue 处理碰撞和光线投射的基础.
+>
+> `Ue Document: Every object that can collide gets an Object Type and a series of responses that define how it interacts with all other object types.`
+>
+> 每个对象将有自己的 Object Type，以及一系列的响应，这些响应决定了其与其他对象()的交互方式.
+>
+> `Ue Document: When a collision or overlap event occurs, both (or all) objects involved can be set to affect or be affected by blocking, overlapping, or ignoring each other.`
+>
+> blocking / 阻挡，overlapping / 重叠，ignoring / 忽略，三种响应方式，决定了接触对象的互相影响与受影响的方式.
+
+#### Collision Responses / 碰撞响应
+
+> ``Ue Document: These define how this Physics Body should interact with all of the other types of Trace and Object Types. Remember, it's the interaction between both Physics Bodies that define the resulting action, so the Object Type and Collision Responses of both Physics Bodies matter.`
+>
+> 碰撞响应定义了此物理形体与所有其他追踪类型与对象类型的交互方式.
+>
+> `注意:`
+>
+> 1. 最终的交互效果将由两者的响应设置共同绝决定，向下规整.
+
+#### Trace Responses / 追踪响应
+
+> `Ue Document: Trace responses are used in Traces (ray casts), such as the Blueprint Node Line Trace by Channel.`
+>
+> 轨迹追踪响应将应用于光线投射检测，例如按信道轨迹追踪.
+
+- FHitResult
+
+  > `Ue Document: Structure containing information about one hit of a trace, such as point of impact and surface normal at that point.`
+  >
+  > FHitResult 结构体包含了轨迹命中的信息.
+
+- HitResult.bBlockingHit
+
+  > ` Ue Document: Indicates if this hit was a result of blocking collision.`
+  >
+  > HitResult.bBlockingHit 表明命中结果是否为一个阻挡碰撞.
+
+- ECollisionChannel / 碰撞轨道
+
+  > 例如 ECC_GameTraceChannel1 这类自定义的轨道，用于追踪.
+  >
+  > `注意:`
+  >
+  > 1. ECC_TraceName 需要在 DefaultEngine.ini 文件中 [/Script/Engine.CollisionProfile] 栏目中获取.
+
+```c++ 
+FHitResult HitResult;
+FCollisionQueryParams CollisionQueryParams(SCENE_QUERY_STAT(ClickableTrace), false);
+//作对 ECC_GameTraceChannel1 轨道的追踪
+if (GetWorld()->LineTraceSingleByChannel(HitResult, WorldOrigin, WorldOrigin + WorldDirection * HitResultTraceDistance, ECC_GameTraceChannel1, CollisionQueryParams)) {
+if (HitResult.bBlockingHit) {
+	//检测到就移动攻击
+	MyPawn->MoveToEnemyAndAttackOnServer(HitResult.ImpactPoint, Cast<APawn>(HitResult.Actor));
+	}
+}
+```
+
+
+
+## Behaviour Tree / 行为树
+
+### BlackBorad / 黑板
+
+### BT - Composition Node / 复合节点
+
+### BT - Service Node / 服务节点
+
+### BT - Task Node / 任务节点
+
+### AI Controller / AI 控制器
