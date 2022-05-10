@@ -5,17 +5,15 @@
 #include "CoreMinimal.h"
 #include "Engine/DataTable.h"
 //#include "GameFramework/Pawn.h"
+#include "Core/YMobaGameTableBase.h"
 #include "CharacterTable.generated.h"
 
 USTRUCT(BluePrintType)
-struct FCharacterTable : public FTableRowBase 
+struct FCharacterTable : public FYMobaGameTableBase
 {
 	GENERATED_USTRUCT_BODY()
 public:
 	FCharacterTable();
-
-	UPROPERTY(EditDefaultsOnly, Category = "Character Class")
-	int64 CharacterID;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Character Class")
 	float AttackRadius;

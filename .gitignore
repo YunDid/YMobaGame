@@ -81,6 +81,7 @@ Content/StartContent/*
 Packages/*
 Content/ParagonCountess/*
 Content/ParagonTwinblast/*
+Content/GardenMap/*
 #files
 
 *.vscode

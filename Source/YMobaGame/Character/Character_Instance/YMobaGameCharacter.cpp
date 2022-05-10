@@ -46,11 +46,11 @@ void AYMobaGameCharacter::BeginPlay()
 	}
 }
 
-void AYMobaGameCharacter::InitCharacterID(const int64& ID) {
+void AYMobaGameCharacter::InitCharacterID(const int32& ID) {
 	CharacterID = ID;
 }
 
-int64 AYMobaGameCharacter::GetCharacterID() {
+int32 AYMobaGameCharacter::GetCharacterID() {
 	return CharacterID;
 }
 

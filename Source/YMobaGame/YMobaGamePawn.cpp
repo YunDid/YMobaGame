@@ -79,7 +79,7 @@ void AYMobaGamePawn::BeginPlay()
 			//外部文件读取 CharacterID
 			FString StringID;
 			FFileHelper::LoadFileToString(StringID,*(FPaths::ProjectDir() / TEXT("CharacterID.txt")));
-			int64 CharaterID = FCString::Atoi64(*StringID);
+			int32 CharaterID = FCString::Atoi(*StringID);
 
 			if (const FCharacterTable* FCharacterTable_Ins = YMobaGameState->GetFCharaterTableByID(CharaterID)) {
 				DefaultPawnClass = FCharacterTable_Ins->CharacterClass;

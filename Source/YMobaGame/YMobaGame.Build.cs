@@ -16,7 +16,9 @@ public class YMobaGame : ModuleRules
 			"HeadMountedDisplay", 
 			"NavigationSystem", 
 			"AIModule", 
-			"SimpleScreenMove" 
+			"SimpleScreenMove",
+			"Landscape",
+			"ImageWrapper"
 		});
     }
 }

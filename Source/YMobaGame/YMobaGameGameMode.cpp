@@ -3,12 +3,15 @@
 #include "YMobaGameGameMode.h"
 #include "YMobaGamePlayerController.h"
 #include "YMobaGameState.h"
+#include "YMobaGameHUD.h"
 #include "UObject/ConstructorHelpers.h"
 
 AYMobaGameGameMode::AYMobaGameGameMode()
 {
 	// use our custom PlayerController class
 	PlayerControllerClass = AYMobaGamePlayerController::StaticClass();
+
+	HUDClass = AYMobaGameHUD::StaticClass();
 
 	GameStateClass = AYMobaGameState::StaticClass();
 
@@ -18,4 +21,16 @@ AYMobaGameGameMode::AYMobaGameGameMode()
 	{
 		DefaultPawnClass = PlayerPawnBPClass.Class;
 	}
+}
+
+// Called when the game starts or when spawned
+void AYMobaGameGameMode::BeginPlay()
+{
+	Super::BeginPlay();
+}
+
+// Called every frame
+void AYMobaGameGameMode::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
 }

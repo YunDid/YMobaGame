@@ -31,9 +31,9 @@ public:
 	UFUNCTION(NetMulticast,unreliable)
 	void MutiCastPlayerAnimMontage(UAnimMontage* AnimMontage_Ins, float PlayRate = 1.0f, FName StartSectionName = NAME_None);
 
-	void InitCharacterID(const int64& ID);
+	void InitCharacterID(const int32& ID);
 
-	int64 GetCharacterID();
+	int32 GetCharacterID();
 
 protected:
 	//是否处于攻击状态.
@@ -41,7 +41,7 @@ protected:
 	//普攻所处阶段.
 	uint8 Attack_Count;
 	//角色ID，便于读取对应的动画.
-	int64 CharacterID;
+	int32 CharacterID;
 
 };
 
