@@ -6,8 +6,11 @@
 
 AYMobaGameHUD::AYMobaGameHUD()
 {
-	static ConstructorHelpers::FClassFinder<UUI_MainScreen> HallMain_BPClass(TEXT("/Game/UI/Game/MainScreen_BP"));
+	static ConstructorHelpers::FClassFinder<UUI_MainScreen> HallMain_BPClass(TEXT("/Game/TopDownCPP/UI/Game/MainScreen_BP"));
 	MainScreenClass = HallMain_BPClass.Class;
+
+	static ConstructorHelpers::FObjectFinder<UDataTable> UDataTable_ClientGlobalConfiguration_Ins(TEXT("/Game/Tables/CharacterTable"));
+	UDataTable_ClientGlobalConfiguration = UDataTable_ClientGlobalConfiguration_Ins.Object;
 }
 
 void AYMobaGameHUD::BeginPlay()
@@ -19,4 +22,19 @@ void AYMobaGameHUD::BeginPlay()
 		MainScreen = CreateWidget<UUI_MainScreen>(GetWorld(), MainScreenClass);
 		MainScreen->AddToPlayerScreen(2);
 	}
+
 }
+
+const FGlobalConfiguration_Client* AYMobaGameHUD::GetClientGlobalConfiguration() {
+
+	//µ¥Àý³õÊ¼»¯ ClientGlobalConfiguration
+	if (!ClientGlobalConfiguration_Cache.Num()) {
+
+		if (UDataTable_ClientGlobalConfiguration) {
+			UDataTable_ClientGlobalConfiguration->GetAllRows(TEXT("Client GlobalConfiguration"), ClientGlobalConfiguration_Cache);
+		}
+	}
+
+	return ClientGlobalConfiguration_Cache[0];
+}
+

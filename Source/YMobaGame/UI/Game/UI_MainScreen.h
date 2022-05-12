@@ -17,8 +17,8 @@ class UUI_MainScreen : public UUI_Base
 	UPROPERTY(meta = (BindWidget))
 	class UUI_MiniMap* MiniMapSystem;
 
-protected:
-	//virtual void NativeConstruct() override;
+public:
+	virtual void NativeConstruct() override;
 
-	//virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
+	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 };

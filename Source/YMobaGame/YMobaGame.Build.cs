@@ -17,8 +17,23 @@ public class YMobaGame : ModuleRules
 			"NavigationSystem", 
 			"AIModule", 
 			"SimpleScreenMove",
-			"Landscape",
-			"ImageWrapper"
+			"UMG",
+			"Landscape"
 		});
-    }
+
+		//server 需加载的模块.
+		if (Target.bWithServerCode == true)
+		{
+			PublicDependencyModuleNames.AddRange(new string[] {
+			});
+		}
+		//client 需额外加载的模块.
+		else
+		{
+			PublicDependencyModuleNames.AddRange(new string[] {
+			"ImageWrapper",
+			});
+		}
+
+	}
 }

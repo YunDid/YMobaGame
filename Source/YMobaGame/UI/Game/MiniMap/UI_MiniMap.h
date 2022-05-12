@@ -17,25 +17,29 @@ class UUI_MiniMap : public UUI_Base
 {
 	GENERATED_BODY()
 
-	//小地图画布
+	//小地图画布.
 	UPROPERTY(meta = (BindWidget))
-	UCanvasPanel* MiniMap;
+	UCanvasPanel* MiniMapPanel;
 
-	//截图
+	//截图照片.
 	UPROPERTY(meta = (BindWidget))
 	UImage* MiniMapImage;
 
-	//2D捕捉相机
+	//2D捕捉.
 	UPROPERTY(EditDefaultsOnly, Category = UI)
 	TSubclassOf<ASceneCapture2D> CaptureClass;
 
-	//材质
+	//材质.
 	UPROPERTY(EditDefaultsOnly, Category = UI)
-	TScriptInterface<UMaterialInterface> MiniMapMat;
+	TScriptInterface<UMaterialInterface> MiniMapMaterial;
 
-protected:
-	////初始化
-	//virtual void NativeConstruct() override;
-	////逐帧
-	//virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
+public:
+	//初始化.
+	virtual void NativeConstruct() override;
+	//逐帧.
+	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
+
+private:
+	//小地图大小.
+	FVector2D MapSize;
 };
