@@ -9,7 +9,7 @@ AYMobaGameHUD::AYMobaGameHUD()
 	static ConstructorHelpers::FClassFinder<UUI_MainScreen> HallMain_BPClass(TEXT("/Game/TopDownCPP/UI/Game/MainScreen_BP"));
 	MainScreenClass = HallMain_BPClass.Class;
 
-	static ConstructorHelpers::FObjectFinder<UDataTable> UDataTable_ClientGlobalConfiguration_Ins(TEXT("/Game/Tables/CharacterTable"));
+	static ConstructorHelpers::FObjectFinder<UDataTable> UDataTable_ClientGlobalConfiguration_Ins(TEXT("/Game/Tables/ClientGlobalConfigurationTable"));
 	UDataTable_ClientGlobalConfiguration = UDataTable_ClientGlobalConfiguration_Ins.Object;
 }
 

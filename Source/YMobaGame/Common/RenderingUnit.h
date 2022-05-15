@@ -22,8 +22,6 @@ namespace RenderingUnit
 
 		FString& GetFilename() { return Filename; }
 
-		ASceneCapture2D* SpawnSceneCapture2D(UWorld* World, UClass* SceneCaptureClass, FVector2D& MapSize, float Life = 0.f);
-
 	protected:
 		void OnScreenshotCapturedInternal(int32 SrcWidth, int32 SrcHeight, const TArray<FColor>& OrigBitmap);
 
@@ -36,4 +34,6 @@ namespace RenderingUnit
 		FDelegateHandle ScreenShotDelegateHandle;
 		FString Filename;
 	};	
+
+	ASceneCapture2D* SpawnSceneCapture2D(UWorld* World, UClass* SceneCaptureClass, FVector2D& MapSize, float Life = 0.f);
 }

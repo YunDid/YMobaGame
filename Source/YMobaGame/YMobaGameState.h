@@ -31,6 +31,9 @@ public:
 	//获取所有角色属性表缓存.
 	const TArray<FCharacterAttribute*>* GetFCharaterAttribute_Cache();
 
+	//获取所有 PlayerLocation.
+	const TArray<FPlayerLocation>& GetPlayerLocations();
+
 protected:
 	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const override;
 

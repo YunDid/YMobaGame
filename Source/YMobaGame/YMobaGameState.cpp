@@ -9,7 +9,7 @@ AYMobaGameState::AYMobaGameState()
 	static ConstructorHelpers::FObjectFinder<UDataTable> UDataTable_Character_Ins(TEXT("/Game/Tables/CharacterTable"));
 	UDataTable_Character = UDataTable_Character_Ins.Object;
 
-	static ConstructorHelpers::FObjectFinder<UDataTable> UDataTable_CharacterAttribute_Ins(TEXT("/Game/Tables/CharacterTable"));
+	static ConstructorHelpers::FObjectFinder<UDataTable> UDataTable_CharacterAttribute_Ins(TEXT("/Game/Tables/CharacterAttribute"));
 	UDataTable_CharacterAttribute = UDataTable_CharacterAttribute_Ins.Object;
 }
 
@@ -78,4 +78,9 @@ void AYMobaGameState::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& Ou
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(AYMobaGameState, PlayerLocation);
+}
+
+const TArray<FPlayerLocation>& AYMobaGameState::GetPlayerLocations()
+{
+	return PlayerLocation;
 }

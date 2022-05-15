@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "../../Core/UI_Base.h"
+#include "../../../YMobaGameHUD.h"
 #include "UI_MiniMap.generated.h"
 
 class UCanvasPanel;
@@ -9,9 +10,7 @@ class ASceneCapture2D;
 class UImage;
 class UMaterialInterface;
 class UCanvasPanelSlot;
-/**
- *
- */
+
 UCLASS()
 class UUI_MiniMap : public UUI_Base
 {
@@ -38,7 +37,14 @@ public:
 	virtual void NativeConstruct() override;
 	//逐帧.
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
+	//判断 CharacterIcons 中是否存放了对应角色的小地图图标.
+	bool IsExistence(const int64 InID);
+	//更新角色图标位置.
+	void ResetLocation(UCanvasPanelSlot* PanelSlot, const FVector2D& MinMapPos, const FVector2D& LocalSize2D);
 
+protected:
+	//小地图角色图标.
+	TMap<int64, TWeakObjectPtr<UCanvasPanelSlot>> CharacterIcons;
 private:
 	//小地图大小.
 	FVector2D MapSize;
