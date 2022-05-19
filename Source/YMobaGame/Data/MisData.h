@@ -12,8 +12,10 @@ struct FPlayerLocation
 
 	FPlayerLocation();
 
+	FPlayerLocation(int64, const FVector&);
+
 	UPROPERTY()
-	int32 CharacterID;
+	int64 PlayerID;
 
 	UPROPERTY()
 	FVector Location;

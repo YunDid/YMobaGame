@@ -67,7 +67,7 @@ void UUI_MiniMap::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 			//场景中的角色
 			for (auto& Tmp : Locations)
 			{
-				if (!IsExistence(Tmp.CharacterID))
+				if (!IsExistence(Tmp.PlayerID))
 				{
 					if (UImage* Point = NewObject<UImage>(GetWorld(), UImage::StaticClass()))
 					{
@@ -78,13 +78,13 @@ void UUI_MiniMap::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 							//Point->SetBrushFromTexture(Tmp.Value.Icon.LoadSynchronous());
 							PanelSlot->SetSize(FVector2D(32.f));
 							PanelSlot->SetAlignment(FVector2D(.5f));
-							CharacterIcons.Add(Tmp.CharacterID, PanelSlot);
+							CharacterIcons.Add(Tmp.PlayerID, PanelSlot);
 						}
 					}
 				}
 				else
 				{
-					if (UCanvasPanelSlot* PanelSlot = CharacterIcons[Tmp.CharacterID].Get())
+					if (UCanvasPanelSlot* PanelSlot = CharacterIcons[Tmp.PlayerID].Get())
 					{
 						FVector2D MinMapPos;
 						MinMapPos.Y = ZoomSize.X - (ZoomSize.X / MapSize.X) * Tmp.Location.X + MinImageMapOffset.Y;
@@ -102,7 +102,7 @@ void UUI_MiniMap::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 				bool bContains = false;
 				for (auto& L : Locations)
 				{
-					if (L.CharacterID == Tmp.Key)
+					if (L.PlayerID == Tmp.Key)
 					{
 						bContains = true;
 						break;

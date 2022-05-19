@@ -16,7 +16,7 @@ AYMobaGameState::AYMobaGameState()
 const FCharacterTable* AYMobaGameState::GetFCharaterTableByID(const int32& CharaterID)
 {
 	//通过单例获取角色配置表缓存
-	const TArray<FCharacterTable*>* FCharaterTable_Cache_Ins = GetFCharaterTable_Cache();
+	const TArray<FCharacterTable*>* FCharaterTable_Cache_Ins = GetFCharaterTableCache_Template();
 
 	for (auto& FCharacterTable_Ins : *FCharaterTable_Cache_Ins) {
 		if (CharaterID == FCharacterTable_Ins->CharacterID) {
@@ -27,7 +27,7 @@ const FCharacterTable* AYMobaGameState::GetFCharaterTableByID(const int32& Chara
 	return nullptr;
 }
 
-const TArray<FCharacterTable*>* AYMobaGameState::GetFCharaterTable_Cache()
+const TArray<FCharacterTable*>* AYMobaGameState::GetFCharaterTableCache_Template()
 {
 	if (!FCharaterTable_Cache.Num()) {
 
@@ -43,10 +43,10 @@ const TArray<FCharacterTable*>* AYMobaGameState::GetFCharaterTable_Cache()
 	return &FCharaterTable_Cache;
 }
 
-const FCharacterAttribute* AYMobaGameState::GetFCharaterAttributeByID(const int32& CharaterID)
+const FCharacterAttribute* AYMobaGameState::GetFCharaterAttributeByID_Template(const int32& CharaterID)
 {
 	//通过单例获取角色配置表缓存
-	const TArray<FCharacterAttribute*>* FCharaterAttribute_Cache_Ins = GetFCharaterAttribute_Cache();
+	const TArray<FCharacterAttribute*>* FCharaterAttribute_Cache_Ins = GetFCharaterAttributeCache_Template();
 
 	for (auto& FCharacterAttribute_Ins : *FCharaterAttribute_Cache_Ins) {
 		if (CharaterID == FCharacterAttribute_Ins->CharacterID) {
@@ -57,7 +57,7 @@ const FCharacterAttribute* AYMobaGameState::GetFCharaterAttributeByID(const int3
 	return nullptr;
 }
 
-const TArray<FCharacterAttribute*>* AYMobaGameState::GetFCharaterAttribute_Cache()
+const TArray<FCharacterAttribute*>* AYMobaGameState::GetFCharaterAttributeCache_Template()
 {
 	if (!FCharaterAttribute_Cache.Num()) {
 
@@ -77,10 +77,86 @@ void AYMobaGameState::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& Ou
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	DOREPLIFETIME(AYMobaGameState, PlayerLocation);
+	DOREPLIFETIME(AYMobaGameState, AllPlayersLocation);
 }
 
 const TArray<FPlayerLocation>& AYMobaGameState::GetPlayerLocations()
 {
-	return PlayerLocation;
+	return AllPlayersLocation;
 }
+
+const TMap<int64, FCharacterAttribute>* AYMobaGameState::GetCharacterAttributes_Map()
+{
+	return &CharacterAttributes_Map;
+}
+
+FCharacterAttribute* AYMobaGameState::GetCharacterAttributeByID(int64 PlayerID)
+{
+	for (auto& Pair : CharacterAttributes_Map) {
+		if (Pair.Key == PlayerID) {
+			return &(Pair.Value);
+		}
+	}
+
+	return nullptr;
+}
+
+bool AYMobaGameState::GetPlayerLocationByID(int64 InPlayerID, FVector& InPlayerLocation)
+{
+	for (auto& Tmp : AllPlayersLocation)
+	{
+		if (Tmp.PlayerID == InPlayerID)
+		{
+			InPlayerLocation = Tmp.Location;
+			return true;
+		}
+	}
+
+	return false;
+}
+
+void AYMobaGameState::AddPlayerAttribute(int64 PlayerID, int32 CharacterID)
+{
+	if (!CharacterAttributes_Map.Contains(PlayerID)) {
+		CharacterAttributes_Map.Add(PlayerID, *GetFCharaterAttributeByID_Template(CharacterID));
+	}
+}
+
+void AYMobaGameState::AddPlayerLocation(int64 PlayerID, const FVector& InPlayerLocation)
+{
+	for (auto& PlayerLocation_Ins : AllPlayersLocation)
+	{
+		if (PlayerLocation_Ins.PlayerID == PlayerID)
+		{
+			return;
+		}
+	}
+
+	AllPlayersLocation.Add(FPlayerLocation(PlayerID, InPlayerLocation));
+}
+
+void AYMobaGameState::UpdateCharacterAILocation(int64 PlayerID, const FVector& InPlayerLocation)
+{
+	for (auto& PlayerLocation_Ins : AllPlayersLocation)
+	{
+		if (PlayerLocation_Ins.PlayerID == PlayerID)
+		{
+			PlayerLocation_Ins.Location = InPlayerLocation;
+			break;
+		}
+	}
+}
+
+int32 AYMobaGameState::GetCurrentCharacterID(int64 PlayerID)
+{
+	if (FCharacterAttribute* CA = GetCharacterAttributeByID(PlayerID))
+	{
+		return CA->CharacterID;
+	}
+
+	return INDEX_NONE;
+}
+
+
+
+

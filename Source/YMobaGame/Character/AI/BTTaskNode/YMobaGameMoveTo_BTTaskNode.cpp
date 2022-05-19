@@ -20,7 +20,7 @@ EBTNodeResult::Type UYMobaGameMoveTo_BTTaskNode::ExecuteTask(UBehaviorTreeCompon
 			//获取 SelfActor 对象.
 			if (AYMobaGameCharacter* SelfActor = Cast<AYMobaGameCharacter>(BlackboardComponent_Ins->GetValueAsObject("SelfActor"))) {			
 				//获取 SelfActor 的 CharacterID.
-				int64 CharacterID_SelfActor = SelfActor->GetCharacterID();
+				int64 CharacterID_SelfActor = SelfActor->GetPlayerID();
 				//根据 SelfActor 所属配置表类型来设置攻击半径.
 				if (const FCharacterTable* FCharacterTable_SelfActor = MethodUnit::GetFCharaterTableByID_Unit(GetWorld(), CharacterID_SelfActor)) {
 					AcceptableRadius = FCharacterTable_SelfActor->CharacterID;

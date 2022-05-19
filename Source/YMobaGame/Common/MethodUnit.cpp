@@ -13,12 +13,13 @@ namespace MethodUnit
 		return nullptr;
 	}
 
-	const FCharacterTable* GetFCharaterTableByID_Unit(UWorld* CurrentWorld, const int64& CharaterID) {
+	const FCharacterTable* GetFCharaterTableByID_Unit(UWorld* CurrentWorld, const int32& CharacterID) {
+			
 		//获取 GameState.
 		AYMobaGameState* YMobaGameState_Ins = GetYMobaGameState_Unit(CurrentWorld);
 		//获取 FCharacterTable.
 		if (YMobaGameState_Ins) {
-			return YMobaGameState_Ins->GetFCharaterTableByID(CharaterID);
+			return YMobaGameState_Ins->GetFCharaterTableByID(CharacterID);
 		}
 
 		return nullptr;
@@ -28,7 +29,17 @@ namespace MethodUnit
 		//获取 GameState.
 		AYMobaGameState* YMobaGameState_Ins = GetYMobaGameState_Unit(CurrentWorld);
 
-		return YMobaGameState_Ins->GetFCharaterTable_Cache();
+		return YMobaGameState_Ins->GetFCharaterTableCache_Template();
+	}
+
+	int32 GetCurrentCharacterID(UWorld* CurrentWorld, int64 PlayerID)
+	{
+		if (AYMobaGameState* GameState_Ins = GetYMobaGameState_Unit(CurrentWorld))
+		{
+			return GameState_Ins->GetCurrentCharacterID(PlayerID);
+		}
+
+		return INDEX_NONE;
 	}
 
 }

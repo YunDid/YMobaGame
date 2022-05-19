@@ -8,6 +8,10 @@
 
 AYMobaGameGameMode::AYMobaGameGameMode()
 {
+	//∆Ù”√ Tick.
+	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bStartWithTickEnabled = true;
+	
 	// use our custom PlayerController class
 	PlayerControllerClass = AYMobaGamePlayerController::StaticClass();
 

@@ -9,7 +9,7 @@
 #include "Engine/World.h"
 
 AYMobaGameCharacter::AYMobaGameCharacter():
-	bAttacking(false), Attack_Count(0), CharacterID(INDEX_NONE)
+	bAttacking(false), Attack_Count(0), PlayerID(INDEX_NONE)
 {
 	// Set size for player capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
@@ -25,6 +25,9 @@ AYMobaGameCharacter::AYMobaGameCharacter():
 	GetCharacterMovement()->bConstrainToPlane = true;
 	GetCharacterMovement()->bSnapToPlaneAtStart = true;
 
+	//测试用，PlayerID目前不知道哪儿初始化.
+	PlayerID = FMath::RandRange(1000000, 8888888);
+
 	// Activate ticking in order to update the cursor every frame.
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
@@ -33,6 +36,15 @@ AYMobaGameCharacter::AYMobaGameCharacter():
 void AYMobaGameCharacter::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
+
+	//逐帧更新玩家位置信息，用于同步.
+	if (GetLocalRole() == ROLE_Authority)
+	{
+		if (AYMobaGameState* GameState_Ins = MethodUnit::GetYMobaGameState_Unit(GetWorld()))
+		{
+			GameState_Ins->UpdateCharacterAILocation(GetPlayerID(), GetActorLocation());
+		}
+	}
 
 }
 
@@ -46,34 +58,49 @@ void AYMobaGameCharacter::BeginPlay()
 	}
 }
 
-void AYMobaGameCharacter::InitCharacterID(const int32& ID) {
-	CharacterID = ID;
+void AYMobaGameCharacter::RegisterPlayerAttributes(const int64& InPlayerID, int32 CharacterID)
+{
+	PlayerID = InPlayerID;
+
+	if (AYMobaGameState* GameState_Ins = MethodUnit::GetYMobaGameState_Unit(GetWorld())) {
+
+		GameState_Ins->AddPlayerAttribute(PlayerID, CharacterID);
+		GameState_Ins->AddPlayerLocation(PlayerID, GetActorLocation());
+		
+	}
 }
 
-int32 AYMobaGameCharacter::GetCharacterID() {
-	return CharacterID;
+
+int64 AYMobaGameCharacter::GetPlayerID() 
+{
+	return PlayerID;
 }
 
 void AYMobaGameCharacter::CommonAttack(TWeakObjectPtr<AYMobaGameCharacter> Enemy)
 {
 	if (Enemy.IsValid()) {
-		//获取 CharacterID 下的配置表项.
-		if (const FCharacterTable* CharacterConfig =  MethodUnit::GetFCharaterTableByID_Unit(GetWorld(), CharacterID)) {
-			//判断当前普攻处于第几阶段.
-			if (Attack_Count < CharacterConfig->CommonAttack_Animation.Num()) {
 
-				//获取 CharacterID 下的具体普攻动画.
-				if (UAnimMontage* Attack_AniMontage = CharacterConfig->CommonAttack_Animation[Attack_Count]) {
-					//播放攻击动画.
-					MutiCastPlayerAnimMontage(Attack_AniMontage);
+		//获取PlayerID 对应的角色配置的 ID.
+		int32 CharacterID = MethodUnit::GetCurrentCharacterID(GetWorld(), PlayerID);
+		if (CharacterID != INDEX_NONE) {
+			//获取 CharacterID 下的配置表项.
+			if (const FCharacterTable* CharacterConfig = MethodUnit::GetFCharaterTableByID_Unit(GetWorld(), CharacterID)) {
+				//判断当前普攻处于第几阶段.
+				if (Attack_Count < CharacterConfig->CommonAttack_Animation.Num()) {
 
-					//普攻状态参数更新.
-					if (Attack_Count == CharacterConfig->CommonAttack_Animation.Num() - 1) {
-						//若已处于倒数第二阶段，则重置.
-						Attack_Count = 0;
-					}
-					else {
-						Attack_Count++;
+					//获取 CharacterID 下的具体普攻动画.
+					if (UAnimMontage* Attack_AniMontage = CharacterConfig->CommonAttack_Animation[Attack_Count]) {
+						//播放攻击动画.
+						MutiCastPlayerAnimMontage(Attack_AniMontage);
+
+						//普攻状态参数更新.
+						if (Attack_Count == CharacterConfig->CommonAttack_Animation.Num() - 1) {
+							//若已处于倒数第二阶段，则重置.
+							Attack_Count = 0;
+						}
+						else {
+							Attack_Count++;
+						}
 					}
 				}
 			}
@@ -83,6 +110,9 @@ void AYMobaGameCharacter::CommonAttack(TWeakObjectPtr<AYMobaGameCharacter> Enemy
 
 UAnimMontage* AYMobaGameCharacter::GetSkillAttackAnimation(KeyCode_Type KeyCode) 
 {
+	//获取PlayerID 对应的角色配置的 ID.
+	int32 CharacterID = MethodUnit::GetCurrentCharacterID(GetWorld(), PlayerID);
+	
 	//获取 CharacterID 下的配置表项.
 	if (const FCharacterTable* CharacterConfig = MethodUnit::GetFCharaterTableByID_Unit(GetWorld(), CharacterID)) {
 		
@@ -123,6 +153,30 @@ void AYMobaGameCharacter::MutiCastPlayerAnimMontage_Implementation(UAnimMontage*
 		PlayAnimMontage(AnimMontage_Ins, PlayRate, StartSectionName);
 	}
 }
+
+FCharacterAttribute* AYMobaGameCharacter::GetCurrentCharacterAttribute()
+{
+	if (AYMobaGameState* GameState_Ins = MethodUnit::GetYMobaGameState_Unit(GetWorld()))
+	{
+		return GameState_Ins->GetCharacterAttributeByID(PlayerID);
+	}
+
+	return NULL;
+}
+
+bool AYMobaGameCharacter::IsDie()
+{
+	if (GetCurrentCharacterAttribute()->Health <= 0.f)
+	{
+		return true;
+	}
+
+	return false;
+}
+
+
+
+
 
 
 

@@ -89,8 +89,13 @@ void AYMobaGamePawn::BeginPlay()
 			if (DefaultPawnClass) {
 				MobaGameCharacter = GetWorld()->SpawnActor<AYMobaGameCharacter>(DefaultPawnClass, GetActorLocation(), GetActorRotation());
 				if (MobaGameCharacter) {
-					//初始化 Character 下的 CharacterID.
-					MobaGameCharacter->InitCharacterID(CharaterID);
+
+					int64 PlayerID = MobaGameCharacter->GetPlayerID();
+					if (PlayerID != INDEX_NONE) {
+						//将玩家相应配置初始化到 GameState 相应容器中.
+						MobaGameCharacter->RegisterPlayerAttributes(PlayerID, CharaterID);
+					}
+
 				}
 			}
 		}
@@ -182,4 +187,14 @@ void AYMobaGamePawn::SkillAttack(KeyCode_Type KeyCode, const APawn* Enemy) {
 	}
 
 }
+
+int64 AYMobaGamePawn::GetPlayerID()
+{
+	if (MobaGameCharacter) {
+		return MobaGameCharacter->GetPlayerID();
+	}
+
+	return INDEX_NONE;
+}
+
 

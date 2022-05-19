@@ -9,8 +9,10 @@ namespace MethodUnit
 {
 	AYMobaGameState* GetYMobaGameState_Unit(UWorld* CurrentWorld);
 
-	const FCharacterTable* GetFCharaterTableByID_Unit(UWorld* CurrentWorld, const int64& CharaterID);
+	const FCharacterTable* GetFCharaterTableByID_Unit(UWorld* CurrentWorld, const int32& CharaterID);
 
 	//获取所有配置表缓存.
 	const TArray<FCharacterTable*>* GetFCharaterTable_Cache_Unit(UWorld* CurrentWorld);
+
+	int32 GetCurrentCharacterID(UWorld* CurrentWorld, int64 PlayerID);
 }

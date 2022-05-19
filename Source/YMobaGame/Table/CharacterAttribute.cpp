@@ -25,5 +25,5 @@ void FCharacterAttribute::Init()
 	EmpircalValue = 0.f;
 	AttackSpeed = 0.66f;
 	WalkSpeed = 356.f;
-	RangeAttack = 1000.f;
+	AttackRange = 1000.f;
 }

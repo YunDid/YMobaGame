@@ -23,16 +23,38 @@ public:
 	const FCharacterTable* GetFCharaterTableByID(const int32& CharaterID);
 
 	//获取所有角色配置表缓存.
-	const TArray<FCharacterTable*>* GetFCharaterTable_Cache();
+	const TArray<FCharacterTable*>* GetFCharaterTableCache_Template();
 
 	//获取ID对应的角色属性表.
-	const FCharacterAttribute* GetFCharaterAttributeByID(const int32& CharaterID);
+	const FCharacterAttribute* GetFCharaterAttributeByID_Template(const int32& CharaterID);
 
 	//获取所有角色属性表缓存.
-	const TArray<FCharacterAttribute*>* GetFCharaterAttribute_Cache();
+	const TArray<FCharacterAttribute*>* GetFCharaterAttributeCache_Template();
 
-	//获取所有 PlayerLocation.
+	//获取所有 AllPlayersLocation.
 	const TArray<FPlayerLocation>& GetPlayerLocations();
+
+	//获取 <玩家，当前控制的角色属性> Map表.
+	const TMap<int64, FCharacterAttribute>* GetCharacterAttributes_Map();
+
+	//通过玩家ID获取对应角色的属性表.
+	FCharacterAttribute* GetCharacterAttributeByID(int64 PlayerID);
+
+	//通过ID获取角色位置.
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	bool GetPlayerLocationByID(int64 InPlayerID, FVector& InPlayerLocation);
+
+	//添加玩家对应角色的属性.
+	void AddPlayerAttribute(int64 PlayerID, int32 CharacterID);
+
+	//添加玩家位置用作同步缓存.
+	void AddPlayerLocation(int64 PlayerID, const FVector& InPlayerLocation);
+
+	//更新 AllPlayersLocation 中相应玩家的位置.
+	void UpdateCharacterAILocation(int64 PlayerID, const FVector& InPlayerLocation);
+
+	//获取当前玩家使用的角色配置ID.
+	int32 GetCurrentCharacterID(int64 PlayerID);
 
 protected:
 	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const override;
@@ -53,5 +75,9 @@ private:
 	TArray<FCharacterAttribute*> FCharaterAttribute_Cache;
 
 	UPROPERTY(Replicated)
-	TArray<FPlayerLocation> PlayerLocation;
+	TArray<FPlayerLocation> AllPlayersLocation;
+
+	UPROPERTY()
+	TMap<int64, FCharacterAttribute> CharacterAttributes_Map;
 };
+         

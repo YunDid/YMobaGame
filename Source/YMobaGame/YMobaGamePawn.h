@@ -72,6 +72,8 @@ public:
 
 	void SkillAttack(KeyCode_Type KeyCode, const APawn* Enemy);
 
+	int64 GetPlayerID();
+
 protected:
 	//用于角色逻辑控制的 Character
 	/*

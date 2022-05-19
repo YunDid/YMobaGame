@@ -81,7 +81,7 @@ public:
 
 	//¹¥»÷·¶Î§
 	UPROPERTY(EditDefaultsOnly, Category = "Character Attribute")
-	float RangeAttack;
+	float AttackRange;
 
 public:
 	void Init();
