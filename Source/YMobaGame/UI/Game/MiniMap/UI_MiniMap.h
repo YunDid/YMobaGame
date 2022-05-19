@@ -24,7 +24,7 @@ class UUI_MiniMap : public UUI_Base
 	UPROPERTY(meta = (BindWidget))
 	UImage* MiniMapImage;
 
-	//2D捕捉.
+	//2D捕捉相机类型.
 	UPROPERTY(EditDefaultsOnly, Category = UI)
 	TSubclassOf<ASceneCapture2D> CaptureClass;
 

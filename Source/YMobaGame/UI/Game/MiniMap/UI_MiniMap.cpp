@@ -24,7 +24,7 @@ void UUI_MiniMap::NativeConstruct()
 	{
 		if (UCanvasPanelSlot* ImagePanelSlot = Cast<UCanvasPanelSlot>(MiniMapImage->Slot))
 		{
-			ImagePanelSlot->SetSize(FVector2D(GetHUD()->GetClientGlobalConfiguration()->MaxMiniMapSize));
+			ImagePanelSlot->SetSize(FVector2D(GetHUD()->GetClientGlobalConfiguration()->MiniMapSize));
 		}
 	}
 
