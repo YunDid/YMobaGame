@@ -28,6 +28,10 @@ AYMobaGameCharacter::AYMobaGameCharacter():
 	//测试用，PlayerID目前不知道哪儿初始化.
 	PlayerID = FMath::RandRange(1000000, 8888888);
 
+	//创建 Widget 组件.
+	Widget = CreateDefaultSubobject<UWidgetComponent>(TEXT("Widget"));
+	Widget->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+
 	// Activate ticking in order to update the cursor every frame.
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;

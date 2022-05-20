@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "../../YMobaGameEnums.h"
 #include "../../Table/CharacterAttribute.h"
+#include "Components/WidgetComponent.h"
 #include "YMobaGameCharacter.generated.h"
 
 UCLASS(Blueprintable)
@@ -57,5 +58,8 @@ protected:
 	//角色ID，便于读取对应的动画.
 	int64 PlayerID;
 
+private:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "BaseAttrubute", meta = (AllowPrivateAccess = "true"))
+	UWidgetComponent* Widget;
 };
 
