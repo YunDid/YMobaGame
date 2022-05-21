@@ -86,4 +86,9 @@ public:
 public:
 	void Init();
 
+	float GetHealthPercentage();
+	float GetManaPercentage();
+	float GetEmpircalPercentage();
+	float GetAngerPercentage();
+
 };

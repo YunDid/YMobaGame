@@ -70,9 +70,34 @@ void AYMobaGameCharacter::RegisterPlayerAttributes(const int64& InPlayerID, int3
 
 		GameState_Ins->AddPlayerAttribute(PlayerID, CharacterID);
 		GameState_Ins->AddPlayerLocation(PlayerID, GetActorLocation());
-		
+		//设置延迟时间并完成角色本身属性设置的广播.
+		GetWorld()->GetTimerManager().SetTimer(InitTimeHandle, this, &AYMobaGameCharacter::InitCharacteritSelf, 0.1f);		
 	}
 }
+
+void AYMobaGameCharacter::InitCharacteritSelf()
+{
+	//延迟初始化
+	/*
+		原因:
+		客户端的角色是服务端同步过来的，客户端本身不创建角色，只复制副本.
+		客户端的角色初始化操作必须在服务端同步之后开始.
+	*/
+
+	//
+	if (InitTimeHandle.IsValid()) {	
+		GetWorld()->GetTimerManager().ClearTimer(InitTimeHandle);
+	}
+	//获取角色配置表中的 UI_Info 后广播.
+	if (AYMobaGameState* GameState_Ins = MethodUnit::GetYMobaGameState_Unit(GetWorld())) 
+	{
+		if (FCharacterAttribute* CharacterAttribute_Ins = GameState_Ins->GetCharacterAttributeByID(PlayerID)) {
+			MutiCastWidgetInfo(CharacterAttribute_Ins->GetHealthPercentage(), CharacterAttribute_Ins->GetManaPercentage());
+		}
+	}
+
+}
+
 
 
 int64 AYMobaGameCharacter::GetPlayerID() 
@@ -157,6 +182,19 @@ void AYMobaGameCharacter::MutiCastPlayerAnimMontage_Implementation(UAnimMontage*
 		PlayAnimMontage(AnimMontage_Ins, PlayRate, StartSectionName);
 	}
 }
+
+void AYMobaGameCharacter::MutiCastWidgetInfo_Implementation(float HeathPercentage, float ManaPercentage)
+{
+	//仅在客户端完成角色UI组件更新.
+	if (GetLocalRole() != ROLE_Authority) {
+		//获取当前角色的 Widget 组件转换为易操作类型后将 UI Info 参数填入.
+		if (UUI_InformationBar* Widget_Ins = Cast<UUI_InformationBar>(Widget->GetUserWidgetObject())) {
+			Widget_Ins->SetHealth(HeathPercentage);
+			Widget_Ins->SetMana(ManaPercentage);
+		}
+	}
+}
+
 
 FCharacterAttribute* AYMobaGameCharacter::GetCurrentCharacterAttribute()
 {

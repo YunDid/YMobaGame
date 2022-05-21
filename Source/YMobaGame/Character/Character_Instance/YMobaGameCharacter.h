@@ -7,6 +7,7 @@
 #include "../../YMobaGameEnums.h"
 #include "../../Table/CharacterAttribute.h"
 #include "Components/WidgetComponent.h"
+#include "../../UI/Game/Character/UI_InformationBar.h"
 #include "YMobaGameCharacter.generated.h"
 
 UCLASS(Blueprintable)
@@ -38,8 +39,15 @@ public:
 	UFUNCTION(NetMulticast,unreliable)
 	void MutiCastPlayerAnimMontage(UAnimMontage* AnimMontage_Ins, float PlayRate = 1.0f, FName StartSectionName = NAME_None);
 
+	//客户端广播UI所需信息.
+	UFUNCTION(NetMulticast, unreliable)
+	void MutiCastWidgetInfo(float HeathPercentage, float ManaPercentage);
+
 	//将当前玩家下的角色属性登记到 GameState 中的相应容器中.
 	void RegisterPlayerAttributes(const int64& InPlayerID, int32 CharacterID);
+
+	//初始化角色信息，例如UI.
+	void InitCharacteritSelf();
 
 	//获取角色相应属性.
 	FCharacterAttribute* GetCurrentCharacterAttribute();
@@ -61,5 +69,9 @@ protected:
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "BaseAttrubute", meta = (AllowPrivateAccess = "true"))
 	UWidgetComponent* Widget;
+
+	//定时器管理器，用于延迟UIInfo的广播.
+	FTimerHandle InitTimeHandle;
+
 };
 

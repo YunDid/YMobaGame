@@ -27,3 +27,23 @@ void FCharacterAttribute::Init()
 	WalkSpeed = 356.f;
 	AttackRange = 1000.f;
 }
+
+float FCharacterAttribute::GetHealthPercentage()
+{
+	return Health / MaxHealth;
+}
+
+float FCharacterAttribute::GetManaPercentage()
+{
+	return Mana / MaxMana;
+}
+
+float FCharacterAttribute::GetEmpircalPercentage()
+{
+	return EmpircalValue / MaxEmpircalValue;
+}
+
+float FCharacterAttribute::GetAngerPercentage()
+{
+	return Anger / MaxAnger;
+}

@@ -13,6 +13,6 @@ struct FYMobaGameTableBase :public FTableRowBase
 
 	FYMobaGameTableBase();
 
-	UPROPERTY(EditDefaultsOnly, Category = "Moby Game Table")
+	UPROPERTY(EditDefaultsOnly, Category = "Moba Game Table")
 	int32 CharacterID;
 };
