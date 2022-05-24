@@ -4,6 +4,7 @@
 #include "YMobaGamePlayerController.h"
 #include "YMobaGameState.h"
 #include "YMobaGameHUD.h"
+#include "YMobaGamePlayerState.h"
 #include "UObject/ConstructorHelpers.h"
 
 AYMobaGameGameMode::AYMobaGameGameMode()
@@ -16,6 +17,8 @@ AYMobaGameGameMode::AYMobaGameGameMode()
 	PlayerControllerClass = AYMobaGamePlayerController::StaticClass();
 
 	HUDClass = AYMobaGameHUD::StaticClass();
+
+	PlayerStateClass = AYMobaGamePlayerState::StaticClass();
 
 	GameStateClass = AYMobaGameState::StaticClass();
 
